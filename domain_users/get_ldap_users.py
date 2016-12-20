@@ -12,42 +12,58 @@ import csv
 from collections import OrderedDict
 import argparse
 from ldap3 import Server, Connection
+import tempfile
 
 def ask_parameters(parsed_args):
     """ Find out missed parameters interactively """
-    print("Hello")
+    if parsed_args.ldap_server is None:
+        default_domain = 'infotecs-nt'
+        domain = input("Domain name [%s]: " % default_domain)
+        if domain == '':
+            domain = default_domain
+        parsed_args.ldap_server = domain
 
+    if parsed_args.domain_user is None:
+        detected_username = domain + '\\' + getpass.getuser()
+        username = input("Domain user name [%s]: " % detected_username)
+        if username == '':
+            username = detected_username
+        parsed_args.domain_user = username
+
+    if parsed_args.domain_password is None:
+        password = getpass.getpass("Domain password: ")
+        parsed_args.domain_password = password
+
+    if parsed_args.search_base is None:
+        default_base = 'OU=Analytics,OU=TDC,OU=InfoTeCS,OU=Company,DC=infotecs-nt'
+        search_base = input("Enter search base [%s]: " % default_base)
+        if search_base == '':
+            search_base = default_base
+        parsed_args.search_base = search_base
 
 def get_ldap_users(parsed_args):
     """ Get users list from LDAPS server """
-    default_domain = 'infotecs-nt'
-    domain = input("Domain name [%s]: " % default_domain)
-    if domain == '':
-        domain = default_domain
-    ldap_server_cert = ssl.get_server_certificate((domain, 636))
-    print(ldap_server_cert)
-    #cert_temp_file = tempfile.NamedTemporaryFile('w')
-    #cert_temp_file.writelines(ldap_server_cert)
-    #cert_temp_file.close()
+    ldap_server_cert = ssl.get_server_certificate((parsed_args.ldap_server, 636))
+    if parsed_args.interactive:
+        print(ldap_server_cert)
+    cert_temp_file = tempfile.NamedTemporaryFile('w')
+    cert_temp_file.writelines(ldap_server_cert)
+    cert_temp_file.close()
 
     #tls = Tls(#validate=ssl.CERT_REQUIRED,
     #          version=ssl.PROTOCOL_TLSv1_2,
     #          #local_certificate_file=cert_temp_file.name,
     #          #ca_certs_file='./domain_root_ca.pem'
     #          )
-    ldap_server = Server(domain, port=636, use_ssl=True)
+    ldap_server = Server(parsed_args.ldap_server, port=636, use_ssl=True)
 
-    detected_username = domain + '\\' + 'Lyadvinsky.Kir' #getpass.getuser()
-    username = input("Domain user name [%s]: " % detected_username)
-
-    if username == '':
-        username = detected_username
-    password = getpass.getpass("Domain password: ")
-    connection = Connection(ldap_server, user=username, password=password)
+    connection = Connection(parsed_args.ldap_server,
+                            user=parsed_args.domain_user,
+                            password=parsed_args.domain_password)
 
     if not connection.bind():
         print('error in bind', connection.result)
-        return 0
+        return
 
     # Map domain fields to the local structure
     fields = OrderedDict((
@@ -58,12 +74,8 @@ def get_ldap_users(parsed_args):
         ('mail', 'email')
         ))
     total_entries = 0
-    default_base = 'OU=Analytics,OU=TDC,OU=InfoTeCS,OU=Company,DC=infotecs-nt'
-    search_base = input("Enter search base [%s]: " % default_base)
-    if search_base == '':
-        search_base = default_base
     entry_generator = connection.extend.standard.paged_search(
-        search_base=search_base,
+        search_base=parsed_args.search_base,
         search_filter='(objectClass=person)',
         attributes=list(fields.keys()),
         paged_size=5,
@@ -91,13 +103,16 @@ def create_parser():
         '-v', '--verbose', help="Increase output verbosity",
         action='store_true')
     parser.add_argument('-i', '--interactive', dest='interactive',
-                        help="Ask all parameters interactivly", action='store_true')
+                        help="Ask all parameters interactivly",
+                        action='store_true')
     parser.add_argument('--ldap-address', dest='ldap_server',
                         help="Address of the LDAP server")
-    parser.add_argument('--user', metavar='domain_user',
+    parser.add_argument('--user', dest='domain_user',
                         help="Domain username for access to the domain")
-    parser.add_argument('--password', metavar='domain_password',
+    parser.add_argument('--password', dest='domain_password',
                         help="Domain user's password")
+    parser.add_argument('--base', dest='search_base',
+                        help="Search base in the domain")
 
     return parser
 
