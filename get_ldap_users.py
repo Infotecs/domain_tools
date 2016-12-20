@@ -8,20 +8,33 @@ import sys
 import getpass
 from ldap3 import Server, Connection, Tls
 import ssl
+from ssl import SSLContext
 import csv
+import tempfile
 
 
 def get_ldap_users():
-    tls = Tls(validate=ssl.CERT_REQUIRED,
-              version=ssl.PROTOCOL_TLSv1_2,
-              local_certificate_file='./domain_ldap.crt',
-              ca_certs_file='./domain_root_ca.pem')
-    domain = input("Domain name [dc01.infotecs-nt]: ")
+    default_domain = 'infotecs-nt'
+    domain = input("Domain name [%s]: " % default_domain)
     if domain == '':
-        domain = 'dc01.infotecs-nt'
+        domain = default_domain
+    ldap_server_cert = ssl.get_server_certificate((domain, 636))
+    print(ldap_server_cert)
+    cert_temp_file = tempfile.NamedTemporaryFile('w', delete=False)
+    cert_temp_file.writelines(ldap_server_cert)
+    cert_temp_file.close()
+
+    context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
+    context.load_cert_chain(cert_temp_file.name)
+    
+    tls = Tls(#validate=ssl.CERT_REQUIRED,
+              version=ssl.PROTOCOL_TLSv1_2,
+              local_certificate_file=cert_temp_file.name,
+              #ca_certs_file='./domain_root_ca.pem'
+              )
     s = Server(domain, port=636, use_ssl=True, tls=tls)
 
-    detected_username = getpass.getuser()
+    detected_username = domain + '\\' + 'Lyadvinsky.Kir' #getpass.getuser()
     username = input("Domain user name [%s]: " % detected_username)
 
     if username == '':
@@ -58,7 +71,7 @@ def get_ldap_users():
         user = {}
         try:
             for key in fields.keys():
-                user[fields[key]] = entry['attributes'][key][0]
+                user[fields[key]] = entry['attributes'][key]
         except KeyError:
             continue
         table.writerow(list(user.values()))
