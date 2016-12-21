@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2e6081e3-9ca2-455b-8eed-4e6c1e92dc33" name="Default" comment="" />
+    <list default="true" id="2e6081e3-9ca2-455b-8eed-4e6c1e92dc33" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/domain_users/get_ldap_users.py" afterPath="$PROJECT_DIR$/domain_users/get_ldap_users.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/test_get_ldap_users.py" afterPath="$PROJECT_DIR$/test/test_get_ldap_users.py" />
+    </list>
     <ignored path="py_ldap_test.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -20,17 +25,34 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="get_ldap_users.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="get_ldap_users.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/domain_users/get_ldap_users.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="324">
-              <caret line="92" column="19" selection-start-line="92" selection-start-column="19" selection-end-line="92" selection-end-column="19" />
+            <state relative-caret-position="439">
+              <caret line="249" column="39" lean-forward="false" selection-start-line="249" selection-start-column="35" selection-end-line="249" selection-end-column="39" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="test_get_ldap_users.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/test/test_get_ldap_users.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="277">
+              <caret line="88" column="15" lean-forward="false" selection-start-line="88" selection-start-column="15" selection-end-line="88" selection-end-column="15" />
+              <folding>
+                <element signature="e#295#304#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
     </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>Ordered</find>
+    </findStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -40,6 +62,8 @@
       <list>
         <option value="$PROJECT_DIR$/get_ldap_users.py" />
         <option value="$PROJECT_DIR$/http_serv.py" />
+        <option value="$PROJECT_DIR$/domain_users/get_ldap_users.py" />
+        <option value="$PROJECT_DIR$/test/test_get_ldap_users.py" />
       </list>
     </option>
   </component>
@@ -49,16 +73,7 @@
     <option name="width" value="1904" />
     <option name="height" value="958" />
   </component>
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
-    <OptionsSetting value="true" id="Add" />
-    <OptionsSetting value="true" id="Remove" />
-    <OptionsSetting value="true" id="Checkout" />
-    <OptionsSetting value="true" id="Update" />
-    <OptionsSetting value="true" id="Status" />
-    <OptionsSetting value="true" id="Edit" />
-    <ConfirmationsSetting value="0" id="Add" />
-    <ConfirmationsSetting value="0" id="Remove" />
-  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
       <flattenPackages />
@@ -77,12 +92,6 @@
       <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="py_ldap_test" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-          </PATH>
           <PATH>
             <PATH_ELEMENT>
               <option name="myItemId" value="py_ldap_test" />
@@ -124,7 +133,31 @@
       </console-settings>
     </option>
   </component>
-  <component name="RunManager" selected="Python.get_ldap_users.py">
+  <component name="RunManager" selected="Python tests.py.test in test">
+    <configuration default="false" name="py.test in test" type="tests" factoryName="py.test" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="py_ldap_test" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_SCRIPT" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <option name="testToRun" value="$PROJECT_DIR$/test" />
+      <option name="keywords" value="" />
+      <option name="params" value="" />
+      <option name="USE_PARAM" value="false" />
+      <option name="USE_KEYWORD" value="false" />
+      <method />
+    </configuration>
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -293,10 +326,16 @@
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
     </configuration>
-    <list size="2">
+    <list size="3">
       <item index="0" class="java.lang.String" itemvalue="Python.debug http" />
       <item index="1" class="java.lang.String" itemvalue="Python.get_ldap_users.py" />
+      <item index="2" class="java.lang.String" itemvalue="Python tests.py.test in test" />
     </list>
+    <recent_temporary>
+      <list size="1">
+        <item index="0" class="java.lang.String" itemvalue="Python tests.py.test in test" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="ShelveChangesManager" show_recycled="false">
     <option name="remove_strategy" value="false" />
@@ -314,20 +353,52 @@
     </task>
     <servers />
   </component>
+  <component name="TestHistory">
+    <history-entry file="py_test_in_test - 2016.12.21 at 15h 47m 38s.xml">
+      <configuration name="py.test in test" configurationId="tests" />
+    </history-entry>
+    <history-entry file="py_test_in_test - 2016.12.21 at 15h 48m 19s.xml">
+      <configuration name="py.test in test" configurationId="tests" />
+    </history-entry>
+    <history-entry file="py_test_in_test - 2016.12.21 at 15h 48m 37s.xml">
+      <configuration name="py.test in test" configurationId="tests" />
+    </history-entry>
+    <history-entry file="py_test_in_test - 2016.12.21 at 15h 50m 03s.xml">
+      <configuration name="py.test in test" configurationId="tests" />
+    </history-entry>
+    <history-entry file="py_test_in_test - 2016.12.21 at 15h 50m 30s.xml">
+      <configuration name="py.test in test" configurationId="tests" />
+    </history-entry>
+    <history-entry file="py_test_in_test - 2016.12.21 at 15h 50m 56s.xml">
+      <configuration name="py.test in test" configurationId="tests" />
+    </history-entry>
+    <history-entry file="py_test_in_test - 2016.12.21 at 15h 51m 28s.xml">
+      <configuration name="py.test in test" configurationId="tests" />
+    </history-entry>
+    <history-entry file="py_test_in_test - 2016.12.21 at 15h 57m 57s.xml">
+      <configuration name="py.test in test" configurationId="tests" />
+    </history-entry>
+    <history-entry file="py_test_in_test - 2016.12.21 at 15h 59m 41s.xml">
+      <configuration name="py.test in test" configurationId="tests" />
+    </history-entry>
+    <history-entry file="py_test_in_test - 2016.12.21 at 16h 00m 51s.xml">
+      <configuration name="py.test in test" configurationId="tests" />
+    </history-entry>
+  </component>
   <component name="ToolWindowManager">
     <frame x="-1" y="27" width="1904" height="958" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24986681" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.40123457" sideWeight="0.5093234" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32839507" sideWeight="0.5039957" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32893157" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32893157" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32839507" sideWeight="0.49600425" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.41656664" sideWeight="0.4967033" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.40123457" sideWeight="0.4906766" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.40123457" sideWeight="0.48854554" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -362,81 +433,31 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="18" />
+      <option name="time" value="19" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/get_ldap_users.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="19" column="40" selection-start-line="19" selection-start-column="40" selection-end-line="19" selection-end-column="40" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/nsms_api.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="504">
-          <caret line="36" column="13" selection-start-line="37" selection-start-column="4" selection-end-line="37" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/http_serv.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1080">
-          <caret line="64" column="30" selection-start-line="64" selection-start-column="30" selection-end-line="64" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///usr/local/lib/python3.4/dist-packages/flask/helpers.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2682">
-          <caret line="158" column="65" selection-start-line="158" selection-start-column="38" selection-end-line="158" selection-end-column="65" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///usr/local/lib/python3.4/dist-packages/flask/app.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="22662">
-          <caret line="1259" column="46" selection-start-line="1259" selection-start-column="46" selection-end-line="1259" selection-end-column="46" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///usr/local/lib/python3.4/dist-packages/flask_httpauth.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4068">
-          <caret line="230" column="8" selection-start-line="230" selection-start-column="8" selection-end-line="230" selection-end-column="8" />
-          <folding>
-            <element signature="e#209#236#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///usr/lib/python3.4/functools.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="810">
-          <caret line="48" column="27" selection-start-line="48" selection-start-column="27" selection-end-line="48" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///usr/local/lib/python3.4/dist-packages/werkzeug/datastructures.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="42732">
-          <caret line="2374" column="0" selection-start-line="2374" selection-start-column="0" selection-end-line="2374" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/nginx.cong">
+    <entry file="file://$PROJECT_DIR$/domain_users/get_ldap_users.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/domain_users/get_ldap_users.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/domain_users/get_ldap_users.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -444,21 +465,56 @@
     <entry file="file://$PROJECT_DIR$/get_ldap_users.py" />
     <entry file="file://$PROJECT_DIR$/nsms_api.py" />
     <entry file="file://$PROJECT_DIR$/http_serv.py" />
+    <entry file="file:///usr/local/lib/python3.4/dist-packages/flask/helpers.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2682">
+          <caret line="158" column="65" lean-forward="false" selection-start-line="158" selection-start-column="38" selection-end-line="158" selection-end-column="65" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/local/lib/python3.4/dist-packages/flask/app.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="22662">
+          <caret line="1259" column="46" lean-forward="false" selection-start-line="1259" selection-start-column="46" selection-end-line="1259" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/local/lib/python3.4/dist-packages/flask_httpauth.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4068">
+          <caret line="230" column="8" lean-forward="false" selection-start-line="230" selection-start-column="8" selection-end-line="230" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/lib/python3.4/functools.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="810">
+          <caret line="48" column="27" lean-forward="false" selection-start-line="48" selection-start-column="27" selection-end-line="48" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/local/lib/python3.4/dist-packages/werkzeug/datastructures.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="42732">
+          <caret line="2374" column="0" lean-forward="false" selection-start-line="2374" selection-start-column="0" selection-end-line="2374" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/nginx.cong" />
+    <entry file="file://$PROJECT_DIR$/get_ldap_users.py" />
+    <entry file="file://$PROJECT_DIR$/nsms_api.py" />
+    <entry file="file://$PROJECT_DIR$/http_serv.py" />
     <entry file="file:///usr/local/lib/python3.4/dist-packages/flask_httpauth.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1098">
-          <caret line="65" column="36" selection-start-line="65" selection-start-column="36" selection-end-line="65" selection-end-column="36" />
-          <folding>
-            <element signature="e#209#236#0" expanded="true" />
-          </folding>
+          <caret line="65" column="36" lean-forward="false" selection-start-line="65" selection-start-column="36" selection-end-line="65" selection-end-column="36" />
         </state>
       </provider>
     </entry>
     <entry file="file:///usr/local/lib/python3.4/dist-packages/werkzeug/datastructures.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="42696">
-          <caret line="2372" column="8" selection-start-line="2372" selection-start-column="8" selection-end-line="2372" selection-end-column="8" />
-          <folding />
+          <caret line="2372" column="8" lean-forward="false" selection-start-line="2372" selection-start-column="8" selection-end-line="2372" selection-end-column="8" />
         </state>
       </provider>
     </entry>
@@ -469,70 +525,70 @@
     <entry file="file:///usr/lib/python2.7/dist-packages/ldap/ldapobject.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file:///usr/lib/python2.7/dist-packages/ldap/controls/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1962">
-          <caret line="109" column="0" selection-start-line="109" selection-start-column="0" selection-end-line="109" selection-end-column="0" />
+          <caret line="109" column="0" lean-forward="false" selection-start-line="109" selection-start-column="0" selection-end-line="109" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file:///usr/lib/python2.7/dist-packages/ldap/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1278">
-          <caret line="71" column="0" selection-start-line="71" selection-start-column="0" selection-end-line="71" selection-end-column="0" />
+          <caret line="71" column="0" lean-forward="false" selection-start-line="71" selection-start-column="0" selection-end-line="71" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file:///usr/lib/python2.7/dist-packages/ldap/controls/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1962">
-          <caret line="109" column="0" selection-start-line="109" selection-start-column="0" selection-end-line="109" selection-end-column="0" />
+          <caret line="109" column="0" lean-forward="false" selection-start-line="109" selection-start-column="0" selection-end-line="109" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file:///usr/lib/python2.7/dist-packages/ldap/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1278">
-          <caret line="71" column="0" selection-start-line="71" selection-start-column="0" selection-end-line="71" selection-end-column="0" />
+          <caret line="71" column="0" lean-forward="false" selection-start-line="71" selection-start-column="0" selection-end-line="71" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file:///usr/lib/python2.7/dist-packages/ldap/ldapobject.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="381">
-          <caret line="604" column="42" selection-start-line="604" selection-start-column="42" selection-end-line="604" selection-end-column="42" />
+          <caret line="604" column="42" lean-forward="false" selection-start-line="604" selection-start-column="42" selection-end-line="604" selection-end-column="42" />
         </state>
       </provider>
     </entry>
     <entry file="file:///usr/lib/python2.7/dist-packages/ldap3/core/connection.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="263">
-          <caret line="382" column="29" selection-start-line="382" selection-start-column="29" selection-end-line="382" selection-end-column="29" />
+          <caret line="382" column="29" lean-forward="false" selection-start-line="382" selection-start-column="29" selection-end-line="382" selection-end-column="29" />
         </state>
       </provider>
     </entry>
     <entry file="file:///usr/local/lib/python3.4/dist-packages/setuptools/dist.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="155">
-          <caret line="789" column="13" selection-start-line="789" selection-start-column="13" selection-end-line="789" selection-end-column="13" />
+          <caret line="789" column="13" lean-forward="false" selection-start-line="789" selection-start-column="13" selection-end-line="789" selection-end-column="13" />
         </state>
       </provider>
     </entry>
     <entry file="file:///usr/local/lib/python3.4/dist-packages/ldap3/core/tls.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-108">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file:///usr/local/lib/python3.4/dist-packages/ldap3/core/server.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="210">
-          <caret line="72" column="8" selection-start-line="72" selection-start-column="8" selection-end-line="72" selection-end-column="8" />
+          <caret line="72" column="8" lean-forward="false" selection-start-line="72" selection-start-column="8" selection-end-line="72" selection-end-column="8" />
         </state>
       </provider>
     </entry>
@@ -541,15 +597,14 @@
     <entry file="file:///usr/local/lib/python3.4/dist-packages/werkzeug/datastructures.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="42552">
-          <caret line="2374" column="0" selection-start-line="2374" selection-start-column="0" selection-end-line="2374" selection-end-column="0" />
-          <folding />
+          <caret line="2374" column="0" lean-forward="false" selection-start-line="2374" selection-start-column="0" selection-end-line="2374" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file:///usr/local/lib/python3.4/dist-packages/flask/templating.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="803">
-          <caret line="148" column="0" selection-start-line="148" selection-start-column="0" selection-end-line="148" selection-end-column="0" />
+          <caret line="148" column="0" lean-forward="false" selection-start-line="148" selection-start-column="0" selection-end-line="148" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -557,8 +612,7 @@
     <entry file="file:///usr/local/lib/python3.4/dist-packages/flask/app.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="22194">
-          <caret line="1259" column="46" selection-start-line="1259" selection-start-column="46" selection-end-line="1259" selection-end-column="46" />
-          <folding />
+          <caret line="1259" column="46" lean-forward="false" selection-start-line="1259" selection-start-column="46" selection-end-line="1259" selection-end-column="46" />
         </state>
       </provider>
     </entry>
@@ -566,34 +620,39 @@
     <entry file="file:///usr/local/lib/python3.4/dist-packages/flask/helpers.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
-          <caret line="158" column="65" selection-start-line="158" selection-start-column="38" selection-end-line="158" selection-end-column="65" />
-          <folding />
+          <caret line="158" column="65" lean-forward="false" selection-start-line="158" selection-start-column="38" selection-end-line="158" selection-end-column="65" />
         </state>
       </provider>
     </entry>
     <entry file="file:///usr/local/lib/python3.4/dist-packages/flask_httpauth.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="144">
-          <caret line="230" column="8" selection-start-line="230" selection-start-column="8" selection-end-line="230" selection-end-column="8" />
-          <folding>
-            <element signature="e#209#236#0" expanded="true" />
-          </folding>
+          <caret line="230" column="8" lean-forward="false" selection-start-line="230" selection-start-column="8" selection-end-line="230" selection-end-column="8" />
         </state>
       </provider>
     </entry>
     <entry file="file:///usr/lib/python3.4/functools.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="810">
-          <caret line="48" column="27" selection-start-line="48" selection-start-column="27" selection-end-line="48" selection-end-column="27" />
-          <folding />
+          <caret line="48" column="27" lean-forward="false" selection-start-line="48" selection-start-column="27" selection-end-line="48" selection-end-column="27" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/domain_users/get_ldap_users.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="92" column="19" selection-start-line="92" selection-start-column="19" selection-end-line="92" selection-end-column="19" />
+        <state relative-caret-position="439">
+          <caret line="249" column="39" lean-forward="false" selection-start-line="249" selection-start-column="35" selection-end-line="249" selection-end-column="39" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/test_get_ldap_users.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="277">
+          <caret line="88" column="15" lean-forward="false" selection-start-line="88" selection-start-column="15" selection-end-line="88" selection-end-column="15" />
+          <folding>
+            <element signature="e#295#304#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
