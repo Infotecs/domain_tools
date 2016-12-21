@@ -20,57 +20,69 @@ import tempfile
 import json
 from ldap3 import Server, Connection
 
+
 def parse_settings_file(parsed_args):
     """ Parse JSON file with settings """
     logger = logging.getLogger('parse_settings_file')
     if parsed_args.settings_file is not None:
-        logger.debug("Passed JSON file with settings: %s", parsed_args.settings_file.name)
+        logger.debug("Passed JSON file with settings: %s",
+                     parsed_args.settings_file.name)
         settings = json.load(parsed_args.settings_file)
         # Parse standard parameters
         if parsed_args.ldap_server is None:
             try:
                 parsed_args.ldap_server = settings['ldap_server']
-                logger.debug("Use ldap_server from JSON file: %s", parsed_args.ldap_server)
+                logger.debug("Use ldap_server from JSON file: %s",
+                             parsed_args.ldap_server)
             except KeyError:
                 logger.warning("Can't find ldap_server in JSON file.")
         else:
-            logger.debug("Use ldap_server from command line: %s", parsed_args.ldap_server)
+            logger.debug("Use ldap_server from command line: %s",
+                         parsed_args.ldap_server)
 
         if parsed_args.domain_user is None:
             try:
                 parsed_args.domain_user = settings['ldap_username']
-                logger.debug("Use domain_user from JSON file: %s", parsed_args.domain_user)
+                logger.debug("Use domain_user from JSON file: %s",
+                             parsed_args.domain_user)
             except KeyError:
                 logger.warning("Can't find ldap_username in JSON file.")
         else:
-            logger.debug("Use domain_user from command line: %s", parsed_args.domain_user)
+            logger.debug("Use domain_user from command line: %s",
+                         parsed_args.domain_user)
 
         if parsed_args.domain_password is None:
             try:
                 parsed_args.domain_password = settings['ldap_password']
-                logger.debug("Use domain_password from JSON file, but not showing you.")
+                logger.debug("Use domain_password from JSON file,"
+                             " but not showing you.")
             except KeyError:
                 logger.warning("Can't find domain_password in JSON file.")
         else:
-            logger.debug("Use domain_password from command line, but not showing you.")
+            logger.debug("Use domain_password from command line,"
+                         " but not showing you.")
 
         if parsed_args.search_base is None:
             try:
                 parsed_args.search_base = settings['search_base']
-                logger.debug("Use search_base from JSON file: %s", parsed_args.search_base)
+                logger.debug("Use search_base from JSON file: %s",
+                             parsed_args.search_base)
             except KeyError:
                 logger.warning("Can't find search_base in JSON file.")
         else:
-            logger.debug("Use search_base from command line: %s", parsed_args.search_base)
+            logger.debug("Use search_base from command line: %s",
+                         parsed_args.search_base)
 
         if parsed_args.ldap_port is None:
             try:
                 parsed_args.ldap_port = settings['ldap_port']
-                logger.debug("Use ldap_port from JSON file: %s", parsed_args.ldap_port)
+                logger.debug("Use ldap_port from JSON file: %s",
+                             parsed_args.ldap_port)
             except KeyError:
                 logger.warning("Can't find ldap_port in JSON file.")
         else:
-            logger.debug("Use ldap_port from command line: %s", parsed_args.search_base)
+            logger.debug("Use ldap_port from command line: %s",
+                         parsed_args.search_base)
 
         # Parse domain fields bindings
         try:
@@ -90,7 +102,8 @@ def parse_bindings(bindings):
             ('email', 'mail')
             ))
     else:
-        fields = OrderedDict((k, v[1]) for k, v in sorted(bindings.items(), key=lambda x: x[1][0]))
+        fields = OrderedDict((k, v[1]) for k, v in
+                             sorted(bindings.items(), key=lambda x: x[1][0]))
 
     return fields
 
