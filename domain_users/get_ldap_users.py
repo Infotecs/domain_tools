@@ -91,9 +91,8 @@ def get_ldap_users(parsed_args):
             continue
         total_entries += 1
     csv_file.close()
-    print('Total entries retrieved: ', end='')
+    print("Total entries retrieved: %d" % total_entries, end='')
 
-    return total_entries
 
 def create_parser():
     """ Parse command line arguments """
