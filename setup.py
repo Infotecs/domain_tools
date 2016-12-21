@@ -7,6 +7,7 @@
 # Licensed under the BSD 3-Clause license.
 # See LICENSE file in the project root for full license information.
 #
+""" Setup script """
 
 import re
 
@@ -15,26 +16,26 @@ from os.path import join, dirname
 from setuptools import setup, find_packages
 
 with open(join(dirname(__file__), 'domain_users', '__init__.py'), 'r') as f:
-    version_info = re.match(r".*__version__ = '(.*?)'", f.read(), re.S).group(1)
+    VERSION_INFO = re.match(r".*__version__ = '(.*?)'", f.read(), re.S).group(1)
 
 with open('README.rst') as f:
-    long_readme = f.read()
+    LONG_README = f.read()
 
-dev_requires = [
+DEV_REQUIRES = [
     'pytest>=2.8',
     'coverage>=3.7.1',
 ]
 
-install_req = [
+INSTALL_REQ = [
     'ldap3>=2.1.1',
 ]
 
 setup(
     name='domain_tools',
-    version=version_info,
+    version=VERSION_INFO,
     description='Parse and import domain structure',
     keywords='ldap domain import users windows ldaps',
-    long_description=long_readme,
+    long_description=LONG_README,
     author='Kirill V. Lyadvinsky',
     author_email='mail@codeatcpp.com',
     download_url='https://github.com/jia3ep/domain_tools',
@@ -43,9 +44,9 @@ setup(
     packages=find_packages(exclude=('test', 'docs')),
     tests_require=['mock'],
     extras_require={
-        'test': dev_requires,
+        'test': DEV_REQUIRES,
     },
-    install_requires=install_req,
+    install_requires=INSTALL_REQ,
     test_suite='test',
     classifiers=[
         'Development Status :: 4 - Beta',
