@@ -112,6 +112,8 @@ def create_parser():
                         help="Domain user's password")
     parser.add_argument('--base', dest='search_base',
                         help="Search base in the domain")
+    parser.add_argument('--bindings', dest='bindings_file', type=argparse.FileType('r', 0),
+                        help="JSON file with fields bindings. See bind_template.json for example.")
 
     return parser
 
@@ -131,9 +133,9 @@ def safe_parse_args(parser, args):
     return options
 
 
-def main(parser):
+def main():
     """ Entry point implementation """
-    args = safe_parse_args(parser, sys.argv[1:])
+    args = safe_parse_args(create_parser(), sys.argv[1:])
     if args.verbose:
         logging.basicConfig(level=logging.DEBUG)
 
@@ -144,4 +146,4 @@ def main(parser):
 
 
 if __name__ == "__main__":
-    main(create_parser())
+    main()
