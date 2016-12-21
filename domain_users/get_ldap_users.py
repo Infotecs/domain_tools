@@ -94,7 +94,7 @@ def parse_settings_file(parsed_args):
 
 def parse_bindings(bindings):
     """ Parse domain fields bindings from the settings file """
-    if bindings is None:
+    if bindings is None or len(bindings) < 1:
         # Use default bindings if were not set
         fields = OrderedDict((
             ('domain_name', 'sAMAccountName'),
@@ -157,7 +157,7 @@ def get_ldap_users(parsed_args, bindings):
                 cert_temp_file.name)
 
     # TODO: verify server certificate
-    #tls = Tls(#validate=ssl.CERT_REQUIRED,
+    # tls = Tls(#validate=ssl.CERT_REQUIRED,
     #          version=ssl.PROTOCOL_TLSv1_2,
     #          #local_certificate_file=cert_temp_file.name,
     #          #ca_certs_file='./domain_root_ca.pem'
