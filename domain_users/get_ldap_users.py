@@ -1,7 +1,11 @@
-#!/usr/bin/python3
+#! /usr/bin/env python3
 # -*- coding: utf-8 -*-
+#
 # Copyright (C) 2016 InfoTeCS JSC. All rights reserved.
 # Author: Kirill V. Lyadvinsky <Kirill.Lyadvinsky@infotecs.ru>
+#
+# Licensed under the MIT license.
+# See LICENSE file in the project root for full license information.
 #
 
 import logging
