@@ -12,10 +12,10 @@
 import re
 
 from os.path import join, dirname
-
 from setuptools import setup, find_packages
 
-with open(join(dirname(__file__), 'domain_users', '__init__.py'), 'r') as f:
+
+with open(join(dirname(__file__), 'domain_tools', '__init__.py'), 'r') as f:
     VERSION_INFO = re.match(r".*__version__ = '(.*?)'", f.read(), re.S).group(1)
 
 with open('README.rst') as f:
@@ -24,6 +24,7 @@ with open('README.rst') as f:
 DEV_REQUIRES = [
     'pytest>=2.8',
     'coverage>=3.7.1',
+    'setuptools>=32.1.3'
 ]
 
 INSTALL_REQ = [
@@ -34,7 +35,7 @@ setup(
     name='domain_tools',
     version=VERSION_INFO,
     description='Parse and import domain structure',
-    keywords='ldap domain import users windows ldaps',
+    keywords='ldap domain tools utility import users windows ldaps',
     long_description=LONG_README,
     author='Kirill V. Lyadvinsky',
     author_email='mail@codeatcpp.com',
@@ -65,7 +66,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'get_ldap_users = domain_users.get_ldap_users:main',
+            'get_ldap_users = domain_tools.get_ldap_users:main',
         ],
     },
 )

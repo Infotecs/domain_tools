@@ -12,7 +12,9 @@
 import io
 import unittest
 from collections import namedtuple
-from domain_users import get_ldap_users
+import tempfile
+from domain_tools import get_ldap_users
+from domain_tools.settings import Settings
 
 
 class TestParseBindings(unittest.TestCase):
@@ -24,12 +26,13 @@ class TestParseBindings(unittest.TestCase):
             'email': [1, 'mail'],
             'phone': [2, 'extensionAttribute7']
             }
-        fields = get_ldap_users.parse_bindings(correct_bindings)
-        self.assertEqual(len(fields), 4)
-        self.assertEqual(list(fields.items())[0][0], 'email')
-        self.assertEqual(list(fields.items())[1][0], 'phone')
-        self.assertEqual(list(fields.items())[2][0], 'login')
-        self.assertEqual(list(fields.items())[3][0], 'description')
+        settings = Settings()
+        settings.use_json_bindings(correct_bindings)
+        self.assertEqual(len(settings.field_mapping), 4)
+        self.assertEqual(list(settings.field_mapping.items())[0][0], 'email')
+        self.assertEqual(list(settings.field_mapping.items())[1][0], 'phone')
+        self.assertEqual(list(settings.field_mapping.items())[2][0], 'login')
+        self.assertEqual(list(settings.field_mapping.items())[3][0], 'description')
 
     def test_bindings_parser_incorrect_input(self):
         # Test parser with incorrect settings
@@ -39,8 +42,9 @@ class TestParseBindings(unittest.TestCase):
             'email': [1, 'mail'],
             'phone': [2, 'extensionAttribute7']
             }
+        settings = Settings()
         with self.assertRaises(TypeError):
-            fields = get_ldap_users.parse_bindings(wrong_bindings)
+            settings.use_json_bindings(wrong_bindings)
 
     def test_bindings_parser_missing_elements(self):
         # Test bindings with missed elements
@@ -50,47 +54,54 @@ class TestParseBindings(unittest.TestCase):
             'email': [20, 'mail'],
             'phone': [1, 'extensionAttribute7']
             }
-        fields = get_ldap_users.parse_bindings(missing_elements)
-        self.assertEqual(len(fields), 4)
-        self.assertEqual(list(fields.items())[0][0], 'login')
-        self.assertEqual(list(fields.items())[1][0], 'phone')
-        self.assertEqual(list(fields.items())[2][0], 'description')
-        self.assertEqual(list(fields.items())[3][0], 'email')
+        settings = Settings()
+        settings.use_json_bindings(missing_elements)
+        self.assertEqual(len(settings.field_mapping), 4)
+        self.assertEqual(list(settings.field_mapping.items())[0][0], 'login')
+        self.assertEqual(list(settings.field_mapping.items())[1][0], 'phone')
+        self.assertEqual(list(settings.field_mapping.items())[2][0], 'description')
+        self.assertEqual(list(settings.field_mapping.items())[3][0], 'email')
 
     def test_bindings_parser_one_element(self):
         # Test bindings with missed elements
         one_element = {
             'login': [1000, 'sAMAccountName']
             }
-        fields = get_ldap_users.parse_bindings(one_element)
-        self.assertEqual(len(fields), 1)
+        settings = Settings()
+        settings.use_json_bindings(one_element)
+        self.assertEqual(len(settings.field_mapping), 1)
 
     def test_empty_bindings(self):
         # Test empty bindings
         empty_bindings = {}
-        fields = get_ldap_users.parse_bindings(empty_bindings)
+        settings = Settings()
+        settings.use_json_bindings(empty_bindings)
         # fields should contain default
-        self.assertEqual(len(fields), 3)
-        self.assertEqual(list(fields.items())[0][0], 'domain_name')
-        self.assertEqual(list(fields.items())[1][0], 'unit')
-        self.assertEqual(list(fields.items())[2][0], 'email')
+        self.assertEqual(len(settings.field_mapping), 3)
+        self.assertEqual(list(settings.field_mapping.items())[0][0], 'domain_name')
+        self.assertEqual(list(settings.field_mapping.items())[1][0], 'unit')
+        self.assertEqual(list(settings.field_mapping.items())[2][0], 'email')
 
     def test_none_bindings(self):
         # Test None
-        fields = get_ldap_users.parse_bindings(None)
+        settings = Settings()
+        settings.use_json_bindings(None)
         # fields should contain default
-        self.assertEqual(len(fields), 3)
-        self.assertEqual(list(fields.items())[0][0], 'domain_name')
-        self.assertEqual(list(fields.items())[1][0], 'unit')
-        self.assertEqual(list(fields.items())[2][0], 'email')
+        self.assertEqual(len(settings.field_mapping), 3)
+        self.assertEqual(list(settings.field_mapping.items())[0][0], 'domain_name')
+        self.assertEqual(list(settings.field_mapping.items())[1][0], 'unit')
+        self.assertEqual(list(settings.field_mapping.items())[2][0], 'email')
 
 
 class TestParseSettings(unittest.TestCase):
     def test_empty_file(self):
-        test_file = io.BytesIO()
-        args = namedtuple('Args', "output_file")
-        parsed_args = args(test_file)
-        get_ldap_users.parse_settings_file(parsed_args)
+        settings_file = tempfile.NamedTemporaryFile('r')
+        output_file = tempfile.NamedTemporaryFile('w')
+        args = namedtuple('Args', "settings_file output_file")
+        parsed_args = args(settings_file, output_file)
+        settings = get_ldap_users.parse_settings_file(parsed_args)
+        settings_file.close()
+        output_file.close()
 
 if __name__ == '__main__':
     unittest.main()

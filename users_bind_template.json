@@ -2,7 +2,7 @@
   "ldap_server": "infotecs-nt",
   "ldap_port": 636,
   "ldap_username": "infotecs-nt\\Lyadvinsky.Kir",
-  "ldap_password": "",
+  "ldap_password": "*",
   "search_base": "OU=Analytics,OU=TDC,OU=InfoTeCS,OU=Company,DC=infotecs-nt",
   "user_bindings": {
     "email": [ 1, "mail" ],

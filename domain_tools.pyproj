@@ -14,8 +14,12 @@
     <InterpreterId>{2af0f10d-7135-4994-9156-5d01c9c11b7e}</InterpreterId>
     <InterpreterVersion>3.5</InterpreterVersion>
     <IsWindowsApplication>False</IsWindowsApplication>
-    <CommandLineArguments>-v --settings users_bind_template.json -i users.csv</CommandLineArguments>
+    <CommandLineArguments>--settings users_bind_template.json users.csv</CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
+    <Name>domain_tools</Name>
+    <InterpreterArguments>
+    </InterpreterArguments>
+    <DebugStdLib>False</DebugStdLib>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
   <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
@@ -27,12 +31,15 @@
     <InterpreterReference Include="{2af0f10d-7135-4994-9156-5d01c9c11b7e}\3.5" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="domain_users\" />
+    <Folder Include="domain_tools\" />
     <Folder Include="test\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="domain_users\get_ldap_users.py" />
-    <Compile Include="domain_users\__init__.py" />
+    <Compile Include="domain_tools\get_ldap_users.py" />
+    <Compile Include="domain_tools\settings.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="domain_tools\__init__.py" />
     <Compile Include="setup.py">
       <SubType>Code</SubType>
     </Compile>
