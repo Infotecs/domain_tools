@@ -28,8 +28,12 @@ def parse_settings_file(parsed_args):
     logger = logging.getLogger('parse_settings_file')
     logger.debug("Passed JSON file with settings: %s",
                     parsed_args.settings_file.name)
-    json_settings = json.load(parsed_args.settings_file)
     settings = Settings()
+    try:
+        json_settings = json.load(parsed_args.settings_file)
+    except Exception as e:
+        logger.error("Failed to parse settings: %s", e)
+        return settings
     try:
         if parsed_args.domain_user is None:
             settings.ldap_username = json_settings['ldap_username']
@@ -123,20 +127,35 @@ def create_parser():
     parser.add_argument(
         '-v', '--verbose', help="Increase output verbosity",
         action='store_true')
-    parser.add_argument('--user', dest='domain_user',
-                        help="Override domain username for access to the domain.")
-    parser.add_argument('--password', dest='domain_password',
-                        help="Override domain user's password.")
-    parser.add_argument('settings_file', metavar='SETTINGS-FILE',
-                        type=argparse.FileType('r', encoding="utf-8"),
-                        help="JSON file with settigns. See users_bind_template"
-                        ".json for example. Other parameters are have priority"
-                        " over settings file.")
-    parser.add_argument('output_file', metavar='OUTPUT-CSV-FILE',
-                        type=argparse.FileType('w', encoding="utf-8"),
-                        help="Path to the output csv file.")
-    parser.add_argument('--version', action='version', version='%(prog)s ' + __version__,
+    parser.add_argument('--version', action='version',
+                        version='%(prog)s ' + __version__,
                         help="Show script version and exit.")
+
+    subparsers = parser.add_subparsers(help="Available commands")
+    import_parser = subparsers.add_parser(
+        'import',
+        help="Import users from domain.")
+    import_parser.add_argument(
+        '--user', dest='domain_user',
+        help="Override domain username for access to the domain.")
+    import_parser.add_argument(
+        '--password', dest='domain_password',
+        help="Override domain user's password.")
+    import_parser.add_argument(
+        'settings_file', metavar='SETTINGS-FILE',
+        type=argparse.FileType('r', encoding="utf-8"),
+        help="JSON file with settigns. See users_bind_template.json for example"
+        ". Other parameters are have priority over settings file.")
+    import_parser.add_argument(
+        'output_file', metavar='OUTPUT-CSV-FILE',
+        type=argparse.FileType('w', encoding="utf-8"),
+        help="Path to the output csv file.")
+    import_parser.set_defaults(func=import_users)
+
+    generate_parser = subparsers.add_parser(
+        'gen-defaults',
+        help="Generate sample settings file.")
+    generate_parser.set_defaults(func=print_sample_json)
     return parser
 
 
@@ -149,13 +168,8 @@ def safe_parse_args(parser, args):
         sys.exit(0)
     return options
 
-
-def main():
-    """ Entry point implementation """
-    args = safe_parse_args(create_parser(), sys.argv[1:])
-    if args.verbose:
-        logging.basicConfig(level=logging.DEBUG)
-
+def import_users(args):
+    """Import users from domain"""
     settings = parse_settings_file(args)
     if settings.ldap_password == '*':
         settings.ldap_password = ask_password(settings.ldap_username)
@@ -163,6 +177,32 @@ def main():
     entries = get_ldap_users(settings)
     if entries is not None:
         save_records_to_csv(entries, settings.field_mapping, args.output_file)
+
+
+def print_sample_json(args):
+    """Print sample JSON file"""
+    print('{')
+    print('  "ldap_server": "infotecs-jsc",')
+    print('  "ldap_port": 636,')
+    print('  "use_ssl": true,')
+    print('  "ldap_username": "infotecs-jsc\\user42",')
+    print('  "ldap_password": "*",')
+    print('  "search_base": "OU=DevD,OU=InfoTeCS,OU=Company,DC=infotecs-jsc",')
+    print('  "user_bindings": {')
+    print('    "email": [ 1, "mail" ],')
+    print('    "login": [ 2, "sAMAccountName" ],')
+    print('    "description": [ 3, "department" ]')
+    print('  }')
+    print('}')
+
+
+def main():
+    """ Entry point implementation """
+    args = safe_parse_args(create_parser(), sys.argv[1:])
+    if args.verbose:
+        logging.basicConfig(level=logging.DEBUG)
+
+    args.func(args)
 
 
 if __name__ == "__main__":
