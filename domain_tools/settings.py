@@ -15,12 +15,12 @@ from collections import OrderedDict
 class Settings(object):
     """Settings keeper"""
     def __init__(self):
-        self.ldap_username = ''
-        self.ldap_password = ''
-        self.ldap_server = ''
+        self.ldap_username = 'infotecs-jsc\\user42'
+        self.ldap_password = '*'
+        self.ldap_server = 'infotecs-jsc'
         self.ldap_port = 636
         self.use_ssl = True
-        self.search_base = ''
+        self.search_base = 'OU=Develop Dept,OU=InfoTeCS,OU=Company,DC=infotecs-jsc'
         self.field_mapping = OrderedDict((
                 ('domain_name', 'sAMAccountName'),
                 ('unit', 'department'),
