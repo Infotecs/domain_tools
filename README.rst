@@ -5,7 +5,7 @@ Tools to parse and import domain structure
 Here's a utility to import users from the specified LDAP server.
 The usage is a pretty simple:
 
-   $ get_ldap_users settings.json output.csv
+   $ get_ldap_users import settings.json output.csv
 
 Use the following command for more info:
 
