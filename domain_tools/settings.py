@@ -19,6 +19,7 @@ class Settings(object):
         self.ldap_password = ''
         self.ldap_server = ''
         self.ldap_port = 636
+        self.use_ssl = True
         self.search_base = ''
         self.field_mapping = OrderedDict((
                 ('domain_name', 'sAMAccountName'),

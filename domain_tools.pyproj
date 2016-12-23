@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{1f842f1a-2306-4470-98d4-1b28f69cd2fa}</ProjectGuid>
     <ProjectHome />
-    <StartupFile>test\test_get_ldap_users.py</StartupFile>
+    <StartupFile>domain_tools\get_ldap_users.py</StartupFile>
     <SearchPath />
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
