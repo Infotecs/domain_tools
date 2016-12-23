@@ -46,6 +46,8 @@ def parse_settings_file(parsed_args):
         logger.debug("ldap_server is %s", settings.ldap_server)
         settings.ldap_port = json_settings['ldap_port']
         logger.debug("ldap_port is %s", settings.ldap_port)
+        settings.use_ssl = json_settings['use_ssl']
+        logger.debug("use_ssl is %s", settings.use_ssl)
         settings.search_base = json_settings['search_base']
         logger.debug("search_base is %s", settings.search_base)
         settings.use_json_bindings(json_settings['user_bindings'])
@@ -63,42 +65,55 @@ def ask_password(username):
 def get_ldap_users(settings):
     """ Get users list from LDAPS server """
     logger = logging.getLogger('get_ldap_users')
-    ldap_server_cert = ssl.get_server_certificate((settings.ldap_server,
-                                                   settings.ldap_port))
-    logger.info(ldap_server_cert)
+    if settings.use_ssl:
+        try:
+            ldap_server_cert = ssl.get_server_certificate((settings.ldap_server,
+                                                           settings.ldap_port))
+            logger.info(ldap_server_cert)
+        except ConnectionError as e:
+            logger.warning("While trying to get the server certificate: %s", e)
     ldap_server = Server(settings.ldap_server,
                          port=settings.ldap_port,
-                         use_ssl=True)
+                         use_ssl=settings.use_ssl)
     connection = Connection(ldap_server,
                             user=settings.ldap_username,
                             password=settings.ldap_password)
 
-    if not connection.bind():
-        logger.error("Error connecting server: %s", connection.result)
-        return
+    try:
+        connection.bind()
+    except ConnectionError as e:
+        logger.error("Failed to connect to the server: %s", e)
+        return None
 
     entry_generator = connection.extend.standard.paged_search(
         search_base=settings.search_base,
         search_filter='(objectClass=person)',
         attributes=list(settings.field_mapping.values()),
-        paged_size=5,
+        paged_size=10,
         generator=True)
     return entry_generator
 
 
 def save_records_to_csv(entries, mappings, output_file):
     """Save LDAP records to the CSV file"""
-    total_entries = 0
+    logger = logging.getLogger('save_records_to_csv')
     table = csv.writer(output_file, delimiter=';')
-    for entry in entries:
-        try:
-            table.writerow([entry['attributes'][k] if entry['attributes'][k] else '' for k in mappings.values()])
-        except KeyError:
-            continue
-        total_entries += 1
-    print("%d record(s) saved to %s file." %
-          (total_entries, output_file.name))
-    output_file.close()
+    total_entries = 0
+    saved_entries = 0
+    try:
+        for entry in entries:
+            total_entries += 1
+            try:
+                table.writerow([entry['attributes'][k] if entry['attributes'][k] else '' for k in mappings.values()])
+            except KeyError:
+                continue
+            saved_entries += 1
+        logger.info("%d entries found.", total_entries)
+        print("%d record(s) saved to %s file." %
+              (saved_entries, output_file.name))
+        output_file.close()
+    except Exception as e:
+        logger.error("Failed to retrieve domain entries: %s", e)
 
 
 def create_parser():
@@ -146,7 +161,8 @@ def main():
         settings.ldap_password = ask_password(settings.ldap_username)
 
     entries = get_ldap_users(settings)
-    save_records_to_csv(entries, settings.field_mapping, args.output_file)
+    if entries is not None:
+        save_records_to_csv(entries, settings.field_mapping, args.output_file)
 
 
 if __name__ == "__main__":
