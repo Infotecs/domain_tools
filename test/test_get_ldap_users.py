@@ -162,10 +162,10 @@ class TestSave(unittest.TestCase):
             entries = ({'attributes': {'mail': 'a@a.a', 'sAMAccountName': 'admin'}},
                        {'attributes': {'mail': 'a@a.a', 'key_error': 'admin'}},)
             total = get_ldap_users.save_records_to_csv(entries, settings.field_mapping, output_file)
-            self.assertEquals(total, 2)
+            self.assertEqual(total, 2)
             output_file.seek(0)
             data = output_file.readline()
-            self.assertEquals(data, 'admin;a@a.a\n')
+            self.assertEqual(data, 'admin;a@a.a\n')
 
 
 class TestParamParser(unittest.TestCase):
