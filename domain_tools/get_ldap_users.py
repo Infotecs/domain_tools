@@ -165,6 +165,8 @@ def create_parser():
 def safe_parse_args(parser, args):
     """Safely parse arguments"""
     try:
+        if len(args) == 0:
+            raise ValueError
         options = parser.parse_args(args)
     except ValueError:
         parser.print_help()

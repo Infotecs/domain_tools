@@ -179,6 +179,11 @@ class TestParamParser(unittest.TestCase):
             with patch('sys.argv', ["1.py", "--version"]):
                 get_ldap_users.main()
 
+    def test_no_args(self):
+        with self.assertRaises(SystemExit):
+            with patch('sys.argv', ["1.py"]):
+                get_ldap_users.main()
+
 
 if __name__ == '__main__':
     unittest.main()
