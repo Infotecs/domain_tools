@@ -151,7 +151,7 @@ def create_parser():
         ". Other parameters are have priority over settings file.")
     import_parser.add_argument(
         'output_file', metavar='OUTPUT-CSV-FILE',
-        type=argparse.FileType('w', encoding="utf-8"),
+        type=argparse.FileType('w', encoding="utf-8", newline=''),
         help="Path to the output csv file.")
     import_parser.set_defaults(func=import_users)
 

@@ -164,7 +164,7 @@ class TestSave(unittest.TestCase):
             total = get_ldap_users.save_records_to_csv(entries, settings.field_mapping, output_file)
             self.assertEqual(total, 2)
             output_file.seek(0)
-            data = output_file.readline()
+            data = output_file.read()
             self.assertEqual(data, 'admin;a@a.a\n')
 
 
