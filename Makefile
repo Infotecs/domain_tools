@@ -13,11 +13,11 @@ clean:
 distclean: clean
 
 coverage:
-	coverage run --source domain_users setup.py test
-	coverage report -m --fail-under=80
+	coverage run --source domain_tools setup.py test
+	coverage report -m --fail-under=70
 
 lint:
-	pylint domain_users -f parseable -r n
+	pylint domain_tools -f parseable -r n
 
 release: clean lint coverage clean
 	$(PYTHON) setup.py sdist bdist_wheel upload

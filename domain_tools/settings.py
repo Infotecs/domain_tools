@@ -22,11 +22,11 @@ class Settings(object):
         self.use_ssl = True
         self.search_base = 'OU=Develop Dept,OU=InfoTeCS,OU=Company,DC=infotecs-jsc'
         self.field_mapping = OrderedDict((
-                ('domain_name', 'sAMAccountName'),
-                ('unit', 'department'),
-                ('email', 'mail')
-                ))
-       
+            ('domain_name', 'sAMAccountName'),
+            ('unit', 'department'),
+            ('email', 'mail')
+        ))
+
     def __repr__(self, **kwargs):
         return super().__repr__(**kwargs)
 
@@ -34,5 +34,5 @@ class Settings(object):
         """ Parse domain fields bindings from the settings file """
         if bindings is not None and len(bindings) > 0:
             self.field_mapping = OrderedDict((k, v[1]) for k, v in
-                                        sorted(bindings.items(),
-                                               key=lambda x: x[1][0]))
+                                             sorted(bindings.items(),
+                                                    key=lambda x: x[1][0]))

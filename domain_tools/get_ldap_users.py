@@ -14,11 +14,11 @@ import sys
 import getpass
 import ssl
 import csv
-from collections import OrderedDict
 import argparse
-import tempfile
 import json
 from ldap3 import Server, Connection
+from ldap3.core.exceptions import LDAPExceptionError, LDAPOperationResult
+
 from domain_tools import __version__
 from domain_tools.settings import Settings
 
@@ -27,25 +27,25 @@ def parse_settings_file(parsed_args):
     """ Parse JSON file with settings """
     logger = logging.getLogger('parse_settings_file')
     logger.debug("Passed JSON file with settings: %s",
-                    parsed_args.settings_file.name)
+                 parsed_args.settings_file.name)
     settings = Settings()
     try:
         json_settings = json.load(parsed_args.settings_file)
-    except Exception as e:
-        logger.error("Failed to parse settings: %s", e)
+    except ValueError as exp:
+        logger.error("Failed to parse settings: %s", exp)
         return settings
     try:
         if parsed_args.domain_user is None:
             settings.ldap_username = json_settings['ldap_username']
         else:
-            settings.ldap_username = parsed_args.domain_user        
+            settings.ldap_username = parsed_args.domain_user
         logger.debug("ldap_username is %s", settings.ldap_username)
         if parsed_args.domain_password is None:
             settings.ldap_password = json_settings['ldap_password']
             logger.debug("Use ldap_password from file.")
         else:
             settings.ldap_password = parsed_args.domain_password
-            logger.debug("Use ldap_password from command line parameters.")        
+            logger.debug("Use ldap_password from command line parameters.")
         settings.ldap_server = json_settings['ldap_server']
         logger.debug("ldap_server is %s", settings.ldap_server)
         settings.ldap_port = json_settings['ldap_port']
@@ -56,8 +56,8 @@ def parse_settings_file(parsed_args):
         logger.debug("search_base is %s", settings.search_base)
         settings.use_json_bindings(json_settings['user_bindings'])
         logger.debug("user_bindings is ok")
-    except KeyError as e:
-        logger.warning("Can't find %s in JSON file.", str(e))
+    except KeyError as exp:
+        logger.warning("Can't find %s in JSON file.", exp)
     return settings
 
 
@@ -74,19 +74,20 @@ def get_ldap_users(settings):
             ldap_server_cert = ssl.get_server_certificate((settings.ldap_server,
                                                            settings.ldap_port))
             logger.info(ldap_server_cert)
-        except ConnectionError as e:
-            logger.warning("While trying to get the server certificate: %s", e)
+        except (ssl.SSLError, ConnectionError) as exp:
+            logger.warning("While trying to get the server certificate: %s", exp)
     ldap_server = Server(settings.ldap_server,
                          port=settings.ldap_port,
                          use_ssl=settings.use_ssl)
     connection = Connection(ldap_server,
                             user=settings.ldap_username,
-                            password=settings.ldap_password)
+                            password=settings.ldap_password,
+                            raise_exceptions=True)
 
     try:
         connection.bind()
-    except ConnectionError as e:
-        logger.error("Failed to connect to the server: %s", e)
+    except (LDAPExceptionError, LDAPOperationResult) as exp:
+        logger.error("Failed to connect to the server: %s", exp)
         return None
 
     entry_generator = connection.extend.standard.paged_search(
@@ -108,16 +109,18 @@ def save_records_to_csv(entries, mappings, output_file):
         for entry in entries:
             total_entries += 1
             try:
-                table.writerow([entry['attributes'][k] if entry['attributes'][k] else '' for k in mappings.values()])
+                table.writerow(
+                    [entry['attributes'][k] if entry['attributes'][k]
+                     else '' for k in mappings.values()])
             except KeyError:
                 continue
             saved_entries += 1
         logger.info("%d entries found.", total_entries)
         print("%d record(s) saved to %s file." %
               (saved_entries, output_file.name))
-        output_file.close()
-    except Exception as e:
-        logger.error("Failed to retrieve domain entries: %s", e)
+    except (LDAPExceptionError, LDAPOperationResult) as exp:
+        logger.error("Failed to retrieve domain entries: %s", exp)
+    return total_entries
 
 
 def create_parser():
@@ -144,7 +147,7 @@ def create_parser():
     import_parser.add_argument(
         'settings_file', metavar='SETTINGS-FILE',
         type=argparse.FileType('r', encoding="utf-8"),
-        help="JSON file with settigns. See users_bind_template.json for example"
+        help="JSON file with settings. See users_bind_template.json for example"
         ". Other parameters are have priority over settings file.")
     import_parser.add_argument(
         'output_file', metavar='OUTPUT-CSV-FILE',
@@ -168,6 +171,7 @@ def safe_parse_args(parser, args):
         sys.exit(0)
     return options
 
+
 def import_users(args):
     """Import users from domain"""
     settings = parse_settings_file(args)
@@ -181,19 +185,7 @@ def import_users(args):
 
 def print_sample_json(args):
     """Print sample JSON file"""
-    print('{')
-    print('  "ldap_server": "infotecs-jsc",')
-    print('  "ldap_port": 636,')
-    print('  "use_ssl": true,')
-    print('  "ldap_username": "infotecs-jsc\\user42",')
-    print('  "ldap_password": "*",')
-    print('  "search_base": "OU=DevD,OU=InfoTeCS,OU=Company,DC=infotecs-jsc",')
-    print('  "user_bindings": {')
-    print('    "email": [ 1, "mail" ],')
-    print('    "login": [ 2, "sAMAccountName" ],')
-    print('    "description": [ 3, "department" ]')
-    print('  }')
-    print('}')
+    print('TODO')
 
 
 def main():

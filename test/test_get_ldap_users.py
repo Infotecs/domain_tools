@@ -9,10 +9,11 @@
 # See LICENSE file in the project root for full license information.
 #
 """ get_ldap_users tests """
-import io
 import unittest
 from collections import namedtuple
 import tempfile
+from mock import patch
+
 from domain_tools import get_ldap_users
 from domain_tools.settings import Settings
 
@@ -99,19 +100,84 @@ class TestParseSettings(unittest.TestCase):
         output_file = tempfile.NamedTemporaryFile('w')
         args = namedtuple('Args', "domain_user domain_password settings_file output_file")
         parsed_args = args(None, None, settings_file, output_file)
-        settings = get_ldap_users.parse_settings_file(parsed_args)
+        get_ldap_users.parse_settings_file(parsed_args)
         settings_file.close()
         output_file.close()
 
     def test_invalid_file(self):
-        settings_file = tempfile.NamedTemporaryFile('w')
+        """Test incomplete file"""
+        settings_file = tempfile.NamedTemporaryFile('w+')
         settings_file.write('{}')
+        settings_file.seek(0)
         output_file = tempfile.NamedTemporaryFile('w')
         args = namedtuple('Args', "domain_user domain_password settings_file output_file")
         parsed_args = args('test', 'pass', settings_file, output_file)
+        get_ldap_users.parse_settings_file(parsed_args)
+        settings_file.close()
+        output_file.close()
+
+    def test_valid_file(self):
+        """Test correct settings file"""
+        settings_file = tempfile.NamedTemporaryFile('w+')
+        settings_file.write(
+            '{"ldap_server": "192.168.78.12","ldap_port":44445,"use_ssl":true,'
+            '"ldap_username":"rollout\\\\Admin","ldap_password":"Qwerty1",'
+            '"search_base":"DC=rollout","user_bindings":{"email":[1,"mail"],'
+            '"phone":[2,"extensionAttribute7"],"login":[3,"sAMAccountName"],'
+            '"description":[4,"department"]}}')
+        settings_file.seek(0)
+        output_file = tempfile.NamedTemporaryFile('w')
+        args = namedtuple('Args', "domain_user domain_password settings_file output_file")
+        parsed_args = args('test', None, settings_file, output_file)
         settings = get_ldap_users.parse_settings_file(parsed_args)
         settings_file.close()
         output_file.close()
+        self.assertEqual(len(settings.field_mapping), 4)
+        self.assertEqual(list(settings.field_mapping.items())[0][1], 'mail')
+        self.assertEqual(list(settings.field_mapping.items())[1][1], 'extensionAttribute7')
+        self.assertEqual(list(settings.field_mapping.items())[2][1], 'sAMAccountName')
+        self.assertEqual(list(settings.field_mapping.items())[3][1], 'department')
+        self.assertEqual(settings.ldap_server, '192.168.78.12')
+        self.assertEqual(settings.ldap_username, 'test')
+        self.assertEqual(settings.ldap_password, 'Qwerty1')
+        self.assertEqual(settings.ldap_port, 44445)
+        self.assertEqual(settings.use_ssl, True)
+
+
+class TestSave(unittest.TestCase):
+    def test_save_none(self):
+        with tempfile.NamedTemporaryFile('w') as output_file:
+            entries = ()
+            get_ldap_users.save_records_to_csv(entries, None, output_file)
+
+    def test_save_single_record(self):
+        with tempfile.NamedTemporaryFile('w+') as output_file:
+            settings = Settings()
+            bindings = {
+                '1': [1, 'sAMAccountName'],
+                '2': [4, 'mail'],
+            }
+            settings.use_json_bindings(bindings)
+
+            entries = ({'attributes': {'mail': 'a@a.a', 'sAMAccountName': 'admin'}},
+                       {'attributes': {'mail': 'a@a.a', 'key_error': 'admin'}},)
+            total = get_ldap_users.save_records_to_csv(entries, settings.field_mapping, output_file)
+            self.assertEquals(total, 2)
+            output_file.seek(0)
+            data = output_file.read()
+            self.assertEquals(data, 'admin;a@a.a\n')
+
+
+class TestParamParser(unittest.TestCase):
+    def test_help(self):
+        with self.assertRaises(SystemExit):
+            with patch('sys.argv', ["1.py", "-h", "-v"]):
+                get_ldap_users.main()
+
+    def test_version(self):
+        with self.assertRaises(SystemExit):
+            with patch('sys.argv', ["1.py", "--version"]):
+                get_ldap_users.main()
 
 
 if __name__ == '__main__':
