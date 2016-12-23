@@ -97,11 +97,22 @@ class TestParseSettings(unittest.TestCase):
     def test_empty_file(self):
         settings_file = tempfile.NamedTemporaryFile('r')
         output_file = tempfile.NamedTemporaryFile('w')
-        args = namedtuple('Args', "settings_file output_file")
-        parsed_args = args(settings_file, output_file)
+        args = namedtuple('Args', "domain_user domain_password settings_file output_file")
+        parsed_args = args(None, None, settings_file, output_file)
         settings = get_ldap_users.parse_settings_file(parsed_args)
         settings_file.close()
         output_file.close()
+
+    def test_invalid_file(self):
+        settings_file = tempfile.NamedTemporaryFile('w')
+        settings_file.write('{}')
+        output_file = tempfile.NamedTemporaryFile('w')
+        args = namedtuple('Args', "domain_user domain_password settings_file output_file")
+        parsed_args = args('test', 'pass', settings_file, output_file)
+        settings = get_ldap_users.parse_settings_file(parsed_args)
+        settings_file.close()
+        output_file.close()
+
 
 if __name__ == '__main__':
     unittest.main()
