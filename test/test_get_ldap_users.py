@@ -13,6 +13,7 @@ import unittest
 from collections import namedtuple
 import tempfile
 from mock import patch
+import os
 
 from domain_tools import get_ldap_users
 from domain_tools.settings import Settings
@@ -146,26 +147,52 @@ class TestParseSettings(unittest.TestCase):
 
 class TestSave(unittest.TestCase):
     def test_save_none(self):
-        with tempfile.NamedTemporaryFile('w') as output_file:
-            entries = ()
-            get_ldap_users.save_records_to_csv(entries, None, output_file)
+        temp_file, temp_path = tempfile.mkstemp()
+        entries = ()
+        get_ldap_users.save_records_to_csv(entries, None, temp_path)
+        os.close(temp_file)
+        os.remove(temp_path)
 
     def test_save_single_record(self):
-        with tempfile.NamedTemporaryFile('w+') as output_file:
-            settings = Settings()
-            bindings = {
-                '1': [1, 'sAMAccountName'],
-                '2': [4, 'mail'],
-            }
-            settings.use_json_bindings(bindings)
+        temp_file, temp_path = tempfile.mkstemp()
+        settings = Settings()
+        bindings = {
+            '1': [1, 'sAMAccountName'],
+            '2': [4, 'mail'],
+        }
+        settings.use_json_bindings(bindings)
 
-            entries = ({'attributes': {'mail': 'a@a.a', 'sAMAccountName': 'admin'}},
-                       {'attributes': {'mail': 'a@a.a', 'key_error': 'admin'}},)
-            total = get_ldap_users.save_records_to_csv(entries, settings.field_mapping, output_file)
-            self.assertEqual(total, 2)
-            output_file.seek(0)
+        entries = ({'attributes': {'mail': 'a@a.a', 'sAMAccountName': 'admin'}},
+                    {'attributes': {'mail': 'a@a.a', 'key_error': 'admin'}})
+        total = get_ldap_users.save_records_to_csv(entries, settings.field_mapping, temp_path)
+        self.assertEqual(total, 2)
+        with open(temp_path, 'r') as output_file:
             data = output_file.read()
             self.assertEqual(data, 'admin;a@a.a\n')
+            output_file.close()
+        os.close(temp_file)
+        os.remove(temp_path)
+
+    def test_save_two_records(self):
+        temp_file, temp_path = tempfile.mkstemp()
+        settings = Settings()
+        bindings = {
+            '1': [1, 'sAMAccountName'],
+            '2': [4, 'mail'],
+        }
+        settings.use_json_bindings(bindings)
+
+        entries = ({'attributes': {'mail': 'b@b.b', 'sAMAccountName': 'admin'}},
+                    {'attributes': {'mail': 'z@z.z', 'key_error': 'adminok'}},
+                    {'attributes': {'mail': 'a@a.a', 'sAMAccountName': 'adminka'}})
+        total = get_ldap_users.save_records_to_csv(entries, settings.field_mapping, temp_path)
+        self.assertEqual(total, 3)
+        with open(temp_path) as output_file:
+            data = output_file.read()
+            self.assertEqual(data, 'admin;b@b.b\nadminka;a@a.a\n')
+            output_file.close()
+        os.close(temp_file)
+        os.remove(temp_path)
 
 
 class TestParamParser(unittest.TestCase):
