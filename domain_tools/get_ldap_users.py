@@ -102,7 +102,7 @@ def get_ldap_users(settings):
 def save_records_to_csv(entries, mappings, output_path):
     """Save LDAP records to the CSV file"""
     logger = logging.getLogger('save_records_to_csv')
-    with open(output_path, 'w+', newline='') as output_file:
+    with open(output_path, 'w+', newline='', encoding='utf-8', ) as output_file:
         table = csv.writer(output_file, delimiter=';')
         total_entries = 0
         saved_entries = 0
