@@ -99,28 +99,30 @@ def get_ldap_users(settings):
     return entry_generator
 
 
-def save_records_to_csv(entries, mappings, output_file):
+def save_records_to_csv(entries, mappings, output_path):
     """Save LDAP records to the CSV file"""
     logger = logging.getLogger('save_records_to_csv')
-    table = csv.writer(output_file, delimiter=';')
-    total_entries = 0
-    saved_entries = 0
-    try:
-        for entry in entries:
-            total_entries += 1
-            try:
-                table.writerow(
-                    [entry['attributes'][k] if entry['attributes'][k]
-                     else '' for k in mappings.values()])
-            except KeyError:
-                continue
-            saved_entries += 1
-        logger.info("%d entries found.", total_entries)
-        print("%d record(s) saved to %s file." %
-              (saved_entries, output_file.name))
-    except (LDAPExceptionError, LDAPOperationResult) as exp:
-        logger.error("Failed to retrieve domain entries: %s", exp)
-    return total_entries
+    with open(output_path, 'w+', newline='') as output_file:
+        table = csv.writer(output_file, delimiter=';')
+        total_entries = 0
+        saved_entries = 0
+        try:
+            for entry in entries:
+                total_entries += 1
+                try:
+                    table.writerow(
+                        (entry['attributes'][k] if entry['attributes'][k]
+                         else '' for k in mappings.values()))
+                except KeyError:
+                    continue
+                saved_entries += 1
+            logger.info("%d entries found.", total_entries)
+            print("%d record(s) saved to %s file." %
+                  (saved_entries, output_path))
+        except (LDAPExceptionError, LDAPOperationResult) as exp:
+            logger.error("Failed to retrieve domain entries: %s", exp)
+        output_file.close()
+        return total_entries
 
 
 def create_parser():
@@ -151,7 +153,6 @@ def create_parser():
         ". Other parameters are have priority over settings file.")
     import_parser.add_argument(
         'output_file', metavar='OUTPUT-CSV-FILE',
-        type=argparse.FileType('w', encoding="utf-8", newline=''),
         help="Path to the output csv file.")
     import_parser.set_defaults(func=import_users)
 
