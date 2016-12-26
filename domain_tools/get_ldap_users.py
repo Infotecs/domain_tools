@@ -111,8 +111,8 @@ def save_records_to_csv(entries, mappings, output_path):
                 total_entries += 1
                 try:
                     table.writerow(
-                        (entry['attributes'][k] if entry['attributes'][k]
-                         else '' for k in mappings.values()))
+                        [entry['attributes'][k] if entry['attributes'][k]
+                         else '' for k in mappings.values()])
                 except KeyError:
                     continue
                 saved_entries += 1
