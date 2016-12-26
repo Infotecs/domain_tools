@@ -153,6 +153,24 @@ class TestSave(unittest.TestCase):
         os.close(temp_file)
         os.remove(temp_path)
 
+    def test_save_special_symbols(self):
+        temp_file, temp_path = tempfile.mkstemp()
+        settings = Settings()
+        bindings = {
+            '1': [1, 'sAMAccountName'],
+            '2': [4, 'mail'],
+        }
+        settings.use_json_bindings(bindings)
+        entries = ({'attributes': {'mail': 'a@a.a', 'sAMAccountName': 'ad;"min‰'}},)
+        total = get_ldap_users.save_records_to_csv(entries, settings.field_mapping, temp_path)
+        self.assertEqual(total, 1)
+        with open(temp_path, 'r') as output_file:
+            data = output_file.read()
+            self.assertEqual(data, '"ad;""min\xF0\x9F\x9A\x89";a@a.a\n')
+            output_file.close()
+        os.close(temp_file)
+        os.remove(temp_path)
+
     def test_save_single_record(self):
         temp_file, temp_path = tempfile.mkstemp()
         settings = Settings()
@@ -161,9 +179,8 @@ class TestSave(unittest.TestCase):
             '2': [4, 'mail'],
         }
         settings.use_json_bindings(bindings)
-
         entries = ({'attributes': {'mail': 'a@a.a', 'sAMAccountName': 'admin'}},
-                    {'attributes': {'mail': 'a@a.a', 'key_error': 'admin'}})
+                   {'attributes': {'mail': 'a@a.a', 'key_error': 'admin'}})
         total = get_ldap_users.save_records_to_csv(entries, settings.field_mapping, temp_path)
         self.assertEqual(total, 2)
         with open(temp_path, 'r') as output_file:
@@ -181,10 +198,9 @@ class TestSave(unittest.TestCase):
             '2': [4, 'mail'],
         }
         settings.use_json_bindings(bindings)
-
         entries = ({'attributes': {'mail': 'b@b.b', 'sAMAccountName': 'admin'}},
-                    {'attributes': {'mail': 'z@z.z', 'key_error': 'adminok'}},
-                    {'attributes': {'mail': 'a@a.a', 'sAMAccountName': 'adminka'}})
+                   {'attributes': {'mail': 'z@z.z', 'key_error': 'adminok'}},
+                   {'attributes': {'mail': 'a@a.a', 'sAMAccountName': 'adminka'}})
         total = get_ldap_users.save_records_to_csv(entries, settings.field_mapping, temp_path)
         self.assertEqual(total, 3)
         with open(temp_path) as output_file:
