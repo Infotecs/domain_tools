@@ -166,7 +166,7 @@ class TestSave(unittest.TestCase):
                                                    settings.field_mapping,
                                                    temp_path)
         self.assertEqual(total, 1)
-        with open(temp_path, 'r') as output_file:
+        with open(temp_path, 'r', encoding='utf-8') as output_file:
             data = output_file.read()
             self.assertEqual(data, '"ad;""min♌💃 ";a@a.a\n')
             output_file.close()
@@ -187,7 +187,7 @@ class TestSave(unittest.TestCase):
                                                    settings.field_mapping,
                                                    temp_path)
         self.assertEqual(total, 2)
-        with open(temp_path, 'r') as output_file:
+        with open(temp_path, 'r', encoding='utf-8') as output_file:
             data = output_file.read()
             self.assertEqual(data, 'admin;a@a.a\n')
             output_file.close()
@@ -209,7 +209,7 @@ class TestSave(unittest.TestCase):
                                                    settings.field_mapping,
                                                    temp_path)
         self.assertEqual(total, 3)
-        with open(temp_path) as output_file:
+        with open(temp_path, 'r', encoding='utf-8') as output_file:
             data = output_file.read()
             self.assertEqual(data, 'admin;b@b.b\nadminka;a@a.a\n')
             output_file.close()
