@@ -10,7 +10,7 @@
 """ Settings keeper implementation """
 
 from collections import OrderedDict
-
+import json
 
 class Settings(object):
     """Settings keeper"""
@@ -21,18 +21,20 @@ class Settings(object):
         self.ldap_port = 636
         self.use_ssl = True
         self.search_base = 'OU=Develop Dept,OU=InfoTeCS,OU=Company,DC=infotecs-jsc'
-        self.field_mapping = OrderedDict((
-            ('domain_name', 'sAMAccountName'),
-            ('unit', 'department'),
-            ('email', 'mail')
+        self.field_bindings = OrderedDict((
+            ('domain_name', 'sAMAccountName'),            
+            ('email', 'mail'),
+            ('unit', 'department')
         ))
 
-    def __repr__(self, **kwargs):
-        return super().__repr__(**kwargs)
+    def toJSON(self):
+        temp_dict = self.__dict__
+        temp_dict['field_bindings'] = {v[0]: [i, v[1]] for i, v in enumerate(self.field_bindings.items())}
+        return json.dumps(temp_dict, sort_keys=True, indent=4)
 
     def use_json_bindings(self, bindings):
         """ Parse domain fields bindings from the settings file """
         if bindings is not None and len(bindings) > 0:
-            self.field_mapping = OrderedDict((k, v[1]) for k, v in
+            self.field_bindings = OrderedDict((k, v[1]) for k, v in
                                              sorted(bindings.items(),
                                                     key=lambda x: x[1][0]))

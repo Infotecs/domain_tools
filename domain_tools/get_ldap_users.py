@@ -54,8 +54,8 @@ def parse_settings_file(parsed_args):
         logger.debug("use_ssl is %s", settings.use_ssl)
         settings.search_base = json_settings['search_base']
         logger.debug("search_base is %s", settings.search_base)
-        settings.use_json_bindings(json_settings['user_bindings'])
-        logger.debug("user_bindings is ok")
+        settings.use_json_bindings(json_settings['field_bindings'])
+        logger.debug("field_bindings is ok")
     except KeyError as exp:
         logger.warning("Can't find %s in JSON file.", exp)
     return settings
@@ -102,7 +102,7 @@ def get_ldap_users(settings):
 def save_records_to_csv(entries, mappings, output_path):
     """Save LDAP records to the CSV file"""
     logger = logging.getLogger('save_records_to_csv')
-    with open(output_path, 'w+', newline='', encoding='utf-8', ) as output_file:
+    with open(output_path, 'w+', newline='', encoding='utf-8') as output_file:
         table = csv.writer(output_file, delimiter=';')
         total_entries = 0
         saved_entries = 0
@@ -148,7 +148,7 @@ def create_parser():
         help="Override domain user's password.")
     import_parser.add_argument(
         'settings_file', metavar='SETTINGS-FILE',
-        type=argparse.FileType('r', encoding="utf-8"),
+        type=argparse.FileType('r', encoding='utf-8'),
         help="JSON file with settings. See users_bind_template.json for example"
         ". Other parameters are have priority over settings file.")
     import_parser.add_argument(
@@ -159,6 +159,10 @@ def create_parser():
     generate_parser = subparsers.add_parser(
         'gen-defaults',
         help="Generate sample settings file.")
+    generate_parser.add_argument(
+        dest='output_file', metavar='OUTPUT-JSON-FILE', nargs='?',
+        type=argparse.FileType('w', encoding='utf-8'), default=sys.stdout,
+        help="Path to the output JSON file. settings.json, for instance.")
     generate_parser.set_defaults(func=print_sample_json)
     return parser
 
@@ -188,7 +192,8 @@ def import_users(args):
 
 def print_sample_json(args):
     """Print sample JSON file"""
-    print('TODO')
+    settings = Settings()
+    print(settings.toJSON(), file=args.output_file)
 
 
 def main():

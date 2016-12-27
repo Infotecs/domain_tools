@@ -30,11 +30,11 @@ class TestParseBindings(unittest.TestCase):
             }
         settings = Settings()
         settings.use_json_bindings(correct_bindings)
-        self.assertEqual(len(settings.field_mapping), 4)
-        self.assertEqual(list(settings.field_mapping.items())[0][0], 'email')
-        self.assertEqual(list(settings.field_mapping.items())[1][0], 'phone')
-        self.assertEqual(list(settings.field_mapping.items())[2][0], 'login')
-        self.assertEqual(list(settings.field_mapping.items())[3][0], 'description')
+        self.assertEqual(len(settings.field_bindings), 4)
+        self.assertEqual(list(settings.field_bindings.items())[0][0], 'email')
+        self.assertEqual(list(settings.field_bindings.items())[1][0], 'phone')
+        self.assertEqual(list(settings.field_bindings.items())[2][0], 'login')
+        self.assertEqual(list(settings.field_bindings.items())[3][0], 'description')
 
     def test_bindings_parser_incorrect_input(self):
         # Test parser with incorrect settings
@@ -58,11 +58,11 @@ class TestParseBindings(unittest.TestCase):
             }
         settings = Settings()
         settings.use_json_bindings(missing_elements)
-        self.assertEqual(len(settings.field_mapping), 4)
-        self.assertEqual(list(settings.field_mapping.items())[0][0], 'login')
-        self.assertEqual(list(settings.field_mapping.items())[1][0], 'phone')
-        self.assertEqual(list(settings.field_mapping.items())[2][0], 'description')
-        self.assertEqual(list(settings.field_mapping.items())[3][0], 'email')
+        self.assertEqual(len(settings.field_bindings), 4)
+        self.assertEqual(list(settings.field_bindings.items())[0][0], 'login')
+        self.assertEqual(list(settings.field_bindings.items())[1][0], 'phone')
+        self.assertEqual(list(settings.field_bindings.items())[2][0], 'description')
+        self.assertEqual(list(settings.field_bindings.items())[3][0], 'email')
 
     def test_bindings_parser_one_element(self):
         # Test bindings with missed elements
@@ -71,7 +71,7 @@ class TestParseBindings(unittest.TestCase):
             }
         settings = Settings()
         settings.use_json_bindings(one_element)
-        self.assertEqual(len(settings.field_mapping), 1)
+        self.assertEqual(len(settings.field_bindings), 1)
 
     def test_empty_bindings(self):
         # Test empty bindings
@@ -79,20 +79,20 @@ class TestParseBindings(unittest.TestCase):
         settings = Settings()
         settings.use_json_bindings(empty_bindings)
         # fields should contain default
-        self.assertEqual(len(settings.field_mapping), 3)
-        self.assertEqual(list(settings.field_mapping.items())[0][0], 'domain_name')
-        self.assertEqual(list(settings.field_mapping.items())[1][0], 'unit')
-        self.assertEqual(list(settings.field_mapping.items())[2][0], 'email')
+        self.assertEqual(len(settings.field_bindings), 3)
+        self.assertEqual(list(settings.field_bindings.items())[0][0], 'domain_name')
+        self.assertEqual(list(settings.field_bindings.items())[2][0], 'unit')
+        self.assertEqual(list(settings.field_bindings.items())[1][0], 'email')
 
     def test_none_bindings(self):
         # Test None
         settings = Settings()
         settings.use_json_bindings(None)
         # fields should contain default
-        self.assertEqual(len(settings.field_mapping), 3)
-        self.assertEqual(list(settings.field_mapping.items())[0][0], 'domain_name')
-        self.assertEqual(list(settings.field_mapping.items())[1][0], 'unit')
-        self.assertEqual(list(settings.field_mapping.items())[2][0], 'email')
+        self.assertEqual(len(settings.field_bindings), 3)
+        self.assertEqual(list(settings.field_bindings.items())[0][0], 'domain_name')
+        self.assertEqual(list(settings.field_bindings.items())[2][0], 'unit')
+        self.assertEqual(list(settings.field_bindings.items())[1][0], 'email')
 
 
 class TestParseSettings(unittest.TestCase):
@@ -123,7 +123,7 @@ class TestParseSettings(unittest.TestCase):
         settings_file.write(
             '{"ldap_server": "192.168.78.12","ldap_port":44445,"use_ssl":true,'
             '"ldap_username":"rollout\\\\Admin","ldap_password":"Qwerty1",'
-            '"search_base":"DC=rollout","user_bindings":{"email":[1,"mail"],'
+            '"search_base":"DC=rollout","field_bindings":{"email":[1,"mail"],'
             '"phone":[2,"extensionAttribute7"],"login":[3,"sAMAccountName"],'
             '"description":[4,"department"]}}')
         settings_file.seek(0)
@@ -133,17 +133,33 @@ class TestParseSettings(unittest.TestCase):
         settings = get_ldap_users.parse_settings_file(parsed_args)
         settings_file.close()
         output_file.close()
-        self.assertEqual(len(settings.field_mapping), 4)
-        self.assertEqual(list(settings.field_mapping.items())[0][1], 'mail')
-        self.assertEqual(list(settings.field_mapping.items())[1][1], 'extensionAttribute7')
-        self.assertEqual(list(settings.field_mapping.items())[2][1], 'sAMAccountName')
-        self.assertEqual(list(settings.field_mapping.items())[3][1], 'department')
+        self.assertEqual(len(settings.field_bindings), 4)
+        self.assertEqual(list(settings.field_bindings.items())[0][1], 'mail')
+        self.assertEqual(list(settings.field_bindings.items())[1][1], 'extensionAttribute7')
+        self.assertEqual(list(settings.field_bindings.items())[2][1], 'sAMAccountName')
+        self.assertEqual(list(settings.field_bindings.items())[3][1], 'department')
         self.assertEqual(settings.ldap_server, '192.168.78.12')
         self.assertEqual(settings.ldap_username, 'test')
         self.assertEqual(settings.ldap_password, 'Qwerty1')
         self.assertEqual(settings.ldap_port, 44445)
         self.assertEqual(settings.use_ssl, True)
 
+    def test_print_default_settings(self):
+        """Test default settings generator"""
+        default_settings = Settings()
+
+        temp_file, temp_path = tempfile.mkstemp()
+        with patch('sys.argv', ["1.py", "gen-defaults", temp_path]):
+                get_ldap_users.main()
+
+        with open(temp_path) as settings_file:
+            args = namedtuple('Args', "domain_user domain_password settings_file")
+            parsed_args = args(None, None, settings_file)
+            settings = get_ldap_users.parse_settings_file(parsed_args)
+
+        self.assertEqual(default_settings.__dict__, settings.__dict__)
+        os.close(temp_file)
+        os.remove(temp_path)
 
 class TestSave(unittest.TestCase):
     def test_save_none(self):
@@ -163,7 +179,7 @@ class TestSave(unittest.TestCase):
         settings.use_json_bindings(bindings)
         entries = ({'attributes': {'mail': 'a@a.a', 'sAMAccountName': 'ad;"min♌💃 '}},)
         total = get_ldap_users.save_records_to_csv(entries,
-                                                   settings.field_mapping,
+                                                   settings.field_bindings,
                                                    temp_path)
         self.assertEqual(total, 1)
         with open(temp_path, 'r', encoding='utf-8') as output_file:
@@ -184,7 +200,7 @@ class TestSave(unittest.TestCase):
         entries = ({'attributes': {'mail': 'a@a.a', 'sAMAccountName': 'admin'}},
                    {'attributes': {'mail': 'a@a.a', 'key_error': 'admin'}})
         total = get_ldap_users.save_records_to_csv(entries,
-                                                   settings.field_mapping,
+                                                   settings.field_bindings,
                                                    temp_path)
         self.assertEqual(total, 2)
         with open(temp_path, 'r', encoding='utf-8') as output_file:
@@ -206,7 +222,7 @@ class TestSave(unittest.TestCase):
                    {'attributes': {'mail': 'z@z.z', 'key_error': 'adminok'}},
                    {'attributes': {'mail': 'a@a.a', 'sAMAccountName': 'adminka'}})
         total = get_ldap_users.save_records_to_csv(entries,
-                                                   settings.field_mapping,
+                                                   settings.field_bindings,
                                                    temp_path)
         self.assertEqual(total, 3)
         with open(temp_path, 'r', encoding='utf-8') as output_file:
