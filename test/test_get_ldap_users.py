@@ -119,6 +119,19 @@ class TestParseSettings(unittest.TestCase):
         settings_file.close()
         output_file.close()
 
+    def test_lost_required_parameters(self):
+        """Test incomplete file"""
+        settings_file = tempfile.NamedTemporaryFile('w+')
+        settings_file.write('{}')
+        settings_file.seek(0)
+        output_file = tempfile.NamedTemporaryFile('w')
+        args = namedtuple('Args', "domain_user domain_password settings_file output_file")
+        parsed_args = args('test', 'pass', settings_file, output_file)
+        settings = get_ldap_users.parse_settings_file(parsed_args)
+        self.assertIsNone(settings)
+        settings_file.close()
+        output_file.close()
+
     def test_valid_file(self):
         """Test correct settings file"""
         settings_file = tempfile.NamedTemporaryFile('w+')
@@ -157,10 +170,13 @@ class TestParseSettings(unittest.TestCase):
 
         with open(temp_path) as settings_file:
             args = namedtuple('Args', "domain_user domain_password settings_file")
-            parsed_args = args(None, None, settings_file)
+            parsed_args = args(None, 'pass word', settings_file)
             settings = get_ldap_users.parse_settings_file(parsed_args)
 
         self.assertIsNotNone(settings)
+        self.assertNotEqual(default_settings.__dict__, settings.__dict__)
+        self.assertEqual(settings.ldap_password, 'pass word')
+        settings.ldap_password = '*'
         self.assertEqual(default_settings.__dict__, settings.__dict__)
         os.close(temp_file)
         os.remove(temp_path)
