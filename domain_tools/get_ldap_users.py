@@ -32,8 +32,8 @@ def parse_settings_file(parsed_args):
     try:
         json_settings = json.load(parsed_args.settings_file)
     except ValueError as exp:
-        logger.error("Failed to parse settings: %s", exp)
-        return settings
+        logger.error("Failed to parse %s: %s", parsed_args.settings_file.name, exp)
+        return None
     try:
         if parsed_args.domain_user is None:
             settings.ldap_username = json_settings['ldap_username']
@@ -57,7 +57,7 @@ def parse_settings_file(parsed_args):
         settings.use_json_bindings(json_settings['field_bindings'])
         logger.debug("field_bindings is ok")
     except KeyError as exp:
-        logger.warning("Can't find %s in JSON file.", exp)
+        logger.warning("Can't find %s in %s.", parsed_args.settings_file.name, exp)
     return settings
 
 
@@ -182,12 +182,13 @@ def safe_parse_args(parser, args):
 def import_users(args):
     """Import users from domain"""
     settings = parse_settings_file(args)
-    if settings.ldap_password == '*':
-        settings.ldap_password = ask_password(settings.ldap_username)
+    if settings is not None:
+        if settings.ldap_password == '*':
+            settings.ldap_password = ask_password(settings.ldap_username)
 
-    entries = get_ldap_users(settings)
-    if entries is not None:
-        save_records_to_csv(entries, settings.field_bindings, args.output_file)
+        entries = get_ldap_users(settings)
+        if entries is not None:
+            save_records_to_csv(entries, settings.field_bindings, args.output_file)
 
 
 def print_sample_json(args):

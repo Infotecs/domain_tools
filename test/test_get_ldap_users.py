@@ -101,19 +101,21 @@ class TestParseSettings(unittest.TestCase):
         output_file = tempfile.NamedTemporaryFile('w')
         args = namedtuple('Args', "domain_user domain_password settings_file output_file")
         parsed_args = args(None, None, settings_file, output_file)
-        get_ldap_users.parse_settings_file(parsed_args)
+        settings = get_ldap_users.parse_settings_file(parsed_args)
+        self.assertIsNone(settings)
         settings_file.close()
         output_file.close()
 
     def test_invalid_file(self):
         """Test incomplete file"""
         settings_file = tempfile.NamedTemporaryFile('w+')
-        settings_file.write('{}')
+        settings_file.write('{"field_bindings":{"email":[1 "mail"],}}')
         settings_file.seek(0)
         output_file = tempfile.NamedTemporaryFile('w')
         args = namedtuple('Args', "domain_user domain_password settings_file output_file")
         parsed_args = args('test', 'pass', settings_file, output_file)
-        get_ldap_users.parse_settings_file(parsed_args)
+        settings = get_ldap_users.parse_settings_file(parsed_args)
+        self.assertIsNone(settings)
         settings_file.close()
         output_file.close()
 
@@ -133,6 +135,7 @@ class TestParseSettings(unittest.TestCase):
         settings = get_ldap_users.parse_settings_file(parsed_args)
         settings_file.close()
         output_file.close()
+        self.assertIsNotNone(settings)
         self.assertEqual(len(settings.field_bindings), 4)
         self.assertEqual(list(settings.field_bindings.items())[0][1], 'mail')
         self.assertEqual(list(settings.field_bindings.items())[1][1], 'extensionAttribute7')
@@ -157,6 +160,7 @@ class TestParseSettings(unittest.TestCase):
             parsed_args = args(None, None, settings_file)
             settings = get_ldap_users.parse_settings_file(parsed_args)
 
+        self.assertIsNotNone(settings)
         self.assertEqual(default_settings.__dict__, settings.__dict__)
         os.close(temp_file)
         os.remove(temp_path)
@@ -165,7 +169,8 @@ class TestSave(unittest.TestCase):
     def test_save_none(self):
         temp_file, temp_path = tempfile.mkstemp()
         entries = ()
-        get_ldap_users.save_records_to_csv(entries, None, temp_path)
+        total = get_ldap_users.save_records_to_csv(entries, None, temp_path)
+        self.assertEqual(total, 0)
         os.close(temp_file)
         os.remove(temp_path)
 
