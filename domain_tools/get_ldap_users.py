@@ -58,6 +58,7 @@ def parse_settings_file(parsed_args):
         logger.debug("field_bindings is ok")
     except KeyError as exp:
         logger.warning("Can't find %s in %s.", parsed_args.settings_file.name, exp)
+        return None
     return settings
 
 
