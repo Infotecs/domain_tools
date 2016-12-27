@@ -93,7 +93,7 @@ def get_ldap_users(settings):
     entry_generator = connection.extend.standard.paged_search(
         search_base=settings.search_base,
         search_filter='(objectClass=person)',
-        attributes=list(settings.field_mapping.values()),
+        attributes=list(settings.field_bindings.values()),
         paged_size=10,
         generator=True)
     return entry_generator
@@ -187,7 +187,7 @@ def import_users(args):
 
     entries = get_ldap_users(settings)
     if entries is not None:
-        save_records_to_csv(entries, settings.field_mapping, args.output_file)
+        save_records_to_csv(entries, settings.field_bindings, args.output_file)
 
 
 def print_sample_json(args):
