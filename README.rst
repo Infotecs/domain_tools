@@ -11,9 +11,13 @@ Use the following command for more info:
 
    $ get_ldap_users -h
 
-All settings and domain fields' bindings are could be placed in a settings file
-which should be in a JSON format. See `users_bind_template.json` for an example.
-Parameter `user_bindings` should contain values in the following format:
+All settings and domain fields' bindings are could be customized using settings
+file which should be in a JSON format. Run the following to save defaults to
+the settings.json file:
+
+   $ get_ldap_users gen-defaults settings.json
+
+Parameter `field_bindings` should contain values in the following format:
 
    {field_iternal_name}: [ {field-order}, {domain-field-name} ]
 
