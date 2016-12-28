@@ -155,6 +155,10 @@ def create_parser():
     import_parser.add_argument(
         'output_file', metavar='OUTPUT-CSV-FILE',
         help="Path to the output csv file.")
+    import_parser.add_argument(
+        '--preview', dest='preview_result',
+        action='store_true',
+        help="Preview and edit the result before exporting to a file.")
     import_parser.set_defaults(func=import_users)
 
     generate_parser = subparsers.add_parser(
