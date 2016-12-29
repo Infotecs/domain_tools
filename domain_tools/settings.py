@@ -1,11 +1,10 @@
-#! /usr/bin/env python3
+#! /usr/bin/env python
+# vim: set fileencoding=utf-8 :
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2016 InfoTeCS JSC. All rights reserved.
-# Author: Kirill V. Lyadvinsky <Kirill.Lyadvinsky@infotecs.ru>
-#
-# Licensed under the MIT license.
-# See LICENSE file in the project root for full license information.
+# Copyright (c) InfoTeCS JSC. All rights reserved.
+# Licensed under the MIT license. See LICENSE file
+# in the project root for full license information.
 #
 """ Settings keeper implementation """
 
@@ -29,12 +28,13 @@ class Settings(object):
 
     def toJSON(self):
         temp_dict = self.__dict__
-        temp_dict['field_bindings'] = {v[0]: [i, v[1]] for i, v in enumerate(self.field_bindings.items())}
+        temp_dict['field_bindings'] = {v[0]: [i, v[1]] for i, v in
+                                       enumerate(self.field_bindings.items())}
         return json.dumps(temp_dict, sort_keys=True, indent=4)
 
     def use_json_bindings(self, bindings):
         """ Parse domain fields bindings from the settings file """
         if bindings is not None and len(bindings) > 0:
             self.field_bindings = OrderedDict((k, v[1]) for k, v in
-                                             sorted(bindings.items(),
-                                                    key=lambda x: x[1][0]))
+                                              sorted(bindings.items(),
+                                                     key=lambda x: x[1][0]))

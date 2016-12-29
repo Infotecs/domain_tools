@@ -40,6 +40,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="domain_tools\__init__.py" />
+    <Compile Include="LICENSE">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="setup.py">
       <SubType>Code</SubType>
     </Compile>
@@ -51,10 +54,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include=".gitignore" />
+    <Content Include=".travis.yml" />
     <Content Include="README.rst">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="settings_template.json">
       <SubType>Code</SubType>
     </Content>
   </ItemGroup>

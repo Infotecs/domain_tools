@@ -1,11 +1,10 @@
-#! /usr/bin/env python3
+#! /usr/bin/env python
+# vim: set fileencoding=utf-8 :
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2016 InfoTeCS JSC. All rights reserved.
-# Author: Kirill V. Lyadvinsky <Kirill.Lyadvinsky@infotecs.ru>
-#
-# Licensed under the MIT license.
-# See LICENSE file in the project root for full license information.
+# Copyright (c) InfoTeCS JSC. All rights reserved.
+# Licensed under the MIT license. See LICENSE file
+# in the project root for full license information.
 #
 """ Import users' info from the domain server to the csv file. """
 
