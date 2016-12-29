@@ -25,7 +25,7 @@ class TestParseBindings(unittest.TestCase):
             'description': [4, 'department'],
             'email': [1, 'mail'],
             'phone': [2, 'extensionAttribute7']
-            }
+        }
         settings = Settings()
         settings.use_json_bindings(correct_bindings)
         self.assertEqual(len(settings.field_bindings), 4)
@@ -41,7 +41,7 @@ class TestParseBindings(unittest.TestCase):
             'description': [4, 'department'],
             'email': [1, 'mail'],
             'phone': [2, 'extensionAttribute7']
-            }
+        }
         settings = Settings()
         with self.assertRaises(TypeError):
             settings.use_json_bindings(wrong_bindings)
@@ -53,7 +53,7 @@ class TestParseBindings(unittest.TestCase):
             'description': [10, 'department'],
             'email': [20, 'mail'],
             'phone': [1, 'extensionAttribute7']
-            }
+        }
         settings = Settings()
         settings.use_json_bindings(missing_elements)
         self.assertEqual(len(settings.field_bindings), 4)
@@ -66,7 +66,7 @@ class TestParseBindings(unittest.TestCase):
         # Test bindings with missed elements
         one_element = {
             'login': [1000, 'sAMAccountName']
-            }
+        }
         settings = Settings()
         settings.use_json_bindings(one_element)
         self.assertEqual(len(settings.field_bindings), 1)
@@ -135,8 +135,8 @@ class TestParseSettings(unittest.TestCase):
         settings_file = tempfile.NamedTemporaryFile('w+')
         settings_file.write(
             '{"ldap_server": "192.168.78.12","ldap_port":44445,"use_ssl":true,'
-            '"ldap_username":"rollout\\\\Admin","ldap_password":"Qwerty1",'
-            '"search_base":"DC=rollout","field_bindings":{"email":[1,"mail"],'
+            '"ldap_username":"infotecs\\\\Admin","ldap_password":"Qwerty1",'
+            '"search_base":"DC=infotecs","field_bindings":{"email":[1,"mail"],'
             '"phone":[2,"extensionAttribute7"],"login":[3,"sAMAccountName"],'
             '"description":[4,"department"]}}')
         settings_file.seek(0)
@@ -164,7 +164,7 @@ class TestParseSettings(unittest.TestCase):
 
         temp_file, temp_path = tempfile.mkstemp()
         with patch('sys.argv', ["1.py", "gen-defaults", temp_path]):
-                get_ldap_users.main()
+            get_ldap_users.main()
 
         with open(temp_path) as settings_file:
             args = namedtuple('Args', "domain_user domain_password settings_file")
@@ -178,6 +178,7 @@ class TestParseSettings(unittest.TestCase):
         self.assertEqual(default_settings.__dict__, settings.__dict__)
         os.close(temp_file)
         os.remove(temp_path)
+
 
 class TestSave(unittest.TestCase):
     def test_save_none(self):

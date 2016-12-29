@@ -198,7 +198,7 @@ def import_users(args):
 def print_sample_json(args):
     """Print sample JSON file"""
     settings = Settings()
-    print(settings.toJSON(), file=args.output_file)
+    print(settings.to_json(), file=args.output_file)
 
 
 def main():

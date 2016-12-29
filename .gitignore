@@ -10,6 +10,7 @@ __pycache__/
 .idea/
 *.suo
 *.TMP
+.vs
 
 # Distribution / packaging
 .Python
