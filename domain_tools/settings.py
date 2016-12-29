@@ -11,8 +11,10 @@
 from collections import OrderedDict
 import json
 
+
 class Settings(object):
     """Settings keeper"""
+
     def __init__(self):
         self.ldap_username = 'infotecs-jsc\\user42'
         self.ldap_password = '*'
@@ -21,12 +23,12 @@ class Settings(object):
         self.use_ssl = True
         self.search_base = 'OU=Develop Dept,OU=InfoTeCS,OU=Company,DC=infotecs-jsc'
         self.field_bindings = OrderedDict((
-            ('domain_name', 'sAMAccountName'),            
+            ('domain_name', 'sAMAccountName'),
             ('email', 'mail'),
             ('unit', 'department')
         ))
 
-    def toJSON(self):
+    def to_json(self):
         temp_dict = self.__dict__
         temp_dict['field_bindings'] = {v[0]: [i, v[1]] for i, v in
                                        enumerate(self.field_bindings.items())}
