@@ -1,11 +1,12 @@
-#! /usr/bin/env python3
+#! /usr/bin/env python
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2016 Kirill V. Lyadvinsky
 # http://www.codeatcpp.com
 #
-# Licensed under the BSD 3-Clause license.
-# See LICENSE file in the project root for full license information.
+# Copyright (c) InfoTeCS JSC. All rights reserved.
+# Licensed under the MIT license. See LICENSE file
+# in the project root for full license information.
 #
 """ Setup script """
 
@@ -39,9 +40,9 @@ setup(
     long_description=LONG_README,
     author='Kirill V. Lyadvinsky',
     author_email='mail@codeatcpp.com',
-    download_url='https://github.com/jia3ep/domain_tools',
-    url='http://www.codeatcpp.com',
-    license='BSD-3-Clause',
+    download_url='https://github.com/Infotecs/domain_tools',
+    url='https://github.com/Infotecs/domain_tools',
+    license='MIT License',
     packages=find_packages(exclude=('test', 'docs')),
     tests_require=['mock'],
     extras_require={
@@ -54,14 +55,14 @@ setup(
         'Operating System :: OS Independent',
         'Environment :: Console',
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: BSD License',
+        'License :: OSI Approved :: MIT License',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.2',
         'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: Implementation :: CPython',
-        'Topic :: Software Development',
+        'Topic :: Software Development :: Libraries :: Python Modules',
         'Topic :: Utilities',
     ],
     entry_points={

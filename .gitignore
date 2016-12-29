@@ -67,4 +67,4 @@ target/
 .ipynb_checkpoints
 
 #Test files
-users.csv
+*.csv
