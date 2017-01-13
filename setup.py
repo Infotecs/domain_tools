@@ -25,7 +25,8 @@ with open('README.rst') as f:
 DEV_REQUIRES = [
     'pytest>=2.8',
     'coverage>=3.7.1',
-    'setuptools>=32.1.3'
+    'setuptools>=32.1.3',
+    'pep8>=1.7.0'
 ]
 
 INSTALL_REQ = [

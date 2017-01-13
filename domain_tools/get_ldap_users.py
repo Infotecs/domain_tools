@@ -8,13 +8,14 @@
 #
 """ Import users' info from the domain server to the csv file. """
 
-import logging
-import sys
-import getpass
-import ssl
-import csv
 import argparse
+import csv
+import getpass
 import json
+import logging
+import ssl
+import sys
+
 from ldap3 import Server, Connection
 from ldap3.core.exceptions import LDAPExceptionError, LDAPOperationResult
 
@@ -31,7 +32,8 @@ def parse_settings_file(parsed_args):
     try:
         json_settings = json.load(parsed_args.settings_file)
     except ValueError as exp:
-        logger.error("Failed to parse %s: %s", parsed_args.settings_file.name, exp)
+        logger.error("Failed to parse %s: %s",
+                     parsed_args.settings_file.name, exp)
         return None
     try:
         if parsed_args.domain_user is None:
@@ -56,7 +58,8 @@ def parse_settings_file(parsed_args):
         settings.use_json_bindings(json_settings['field_bindings'])
         logger.debug("field_bindings is ok")
     except KeyError as exp:
-        logger.warning("Can't find %s in %s.", parsed_args.settings_file.name, exp)
+        logger.warning("Can't find %s in %s.",
+                       parsed_args.settings_file.name, exp)
         return None
     return settings
 
@@ -71,11 +74,12 @@ def get_ldap_users(settings):
     logger = logging.getLogger('get_ldap_users')
     if settings.use_ssl:
         try:
-            ldap_server_cert = ssl.get_server_certificate((settings.ldap_server,
-                                                           settings.ldap_port))
+            ldap_server_cert = ssl.get_server_certificate(
+                (settings.ldap_server, settings.ldap_port))
             logger.info(ldap_server_cert)
         except (ssl.SSLError, ConnectionError) as exp:
-            logger.warning("While trying to get the server certificate: %s", exp)
+            logger.warning("While trying to get the server certificate: %s",
+                           exp)
     ldap_server = Server(settings.ldap_server,
                          port=settings.ldap_port,
                          use_ssl=settings.use_ssl)
@@ -149,8 +153,8 @@ def create_parser():
     import_parser.add_argument(
         'settings_file', metavar='SETTINGS-FILE',
         type=argparse.FileType('r', encoding='utf-8'),
-        help="JSON file with settings. See users_bind_template.json for example"
-        ". Other parameters are have priority over settings file.")
+        help="JSON file with settings. See users_bind_template.json for"
+             "example. Other parameters are have priority over settings file.")
     import_parser.add_argument(
         'output_file', metavar='OUTPUT-CSV-FILE',
         help="Path to the output csv file.")
@@ -192,7 +196,9 @@ def import_users(args):
 
         entries = get_ldap_users(settings)
         if entries is not None:
-            save_records_to_csv(entries, settings.field_bindings, args.output_file)
+            save_records_to_csv(entries,
+                                settings.field_bindings,
+                                args.output_file)
 
 
 def print_sample_json(args):
