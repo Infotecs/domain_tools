@@ -1,5 +1,6 @@
-[TYPECHECK]
-ignored-classes=Header
+[BASIC]
+# Good variable names which should always be accepted, separated by a comma
+good-names=logger
 
 [SIMILARITIES]
 # Minimum lines number of a similarity.
@@ -9,3 +10,6 @@ min-similarity-lines=7
 # List of note tags to take in consideration, separated by a comma.
 notes=FIXME,XXX
 
+[DESIGN]
+# Maximum number of arguments for function / method
+max-args=12

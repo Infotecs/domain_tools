@@ -15,7 +15,6 @@ import json
 import logging
 import ssl
 import sys
-import pprint
 
 from ldap3 import Server, Connection
 from ldap3.core.exceptions import LDAPExceptionError, LDAPOperationResult

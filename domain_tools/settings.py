@@ -23,9 +23,9 @@ class Settings(object):
                  ldap_server='infotecs-jsc', ldap_port=636, use_ssl=True,
                  search_base='OU=DevDept,OU=Company,DC=infotecs-jsc',
                  field_bindings=OrderedDict((
-                         ('domain_name', 'sAMAccountName'),
-                         ('email', 'mail'),
-                         ('unit', 'department')))):
+                     ('domain_name', 'sAMAccountName'),
+                     ('email', 'mail'),
+                     ('unit', 'department')))):
         self.ldap_username = ldap_username
         self.ldap_password = ldap_password
         self.ldap_server = ldap_server
@@ -50,9 +50,9 @@ class Settings(object):
         self.use_ssl = json_settings['use_ssl']
         self.search_base = json_settings['search_base']
         self.use_json_bindings(json_settings['field_bindings'])
-        logger.debug("Use the following settings:\n%s", pprint.pformat(
-                     ["%s=%s" % (x, y if x != 'ldap_password' else '******')
-                      for x, y in self.__dict__.items()]))
+        logger.debug("Using the following settings:\n%s", pprint.pformat(
+            ["%s=%s" % (x, y if x != 'ldap_password' else '******')
+             for x, y in self.__dict__.items()]))
 
     def use_json_bindings(self, bindings):
         """Parse domain fields bindings from the settings file."""
