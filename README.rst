@@ -11,7 +11,7 @@ Use the following command for more info:
 
    $ get_ldap_users -h
 
-All settings and domain fields' bindings are could be customized using settings
+All settings and domain fields' bindings could be customized using settings
 file which should be in a JSON format. Run the following to save defaults to
 the `settings.json` file:
 

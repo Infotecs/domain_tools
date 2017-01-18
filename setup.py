@@ -10,20 +10,13 @@
 #
 """ Setup script """
 
-import re
-
-from os.path import join, dirname
 from setuptools import setup, find_packages
+from domain_tools.__init__ import __version__ as VERSION_INFO
 
-
-with open(join(dirname(__file__), 'domain_tools', '__init__.py'), 'r') as f:
-    VERSION_INFO = re.match(r".*__version__ = '(.*?)'", f.read(), re.S).group(1)
-
-with open('README.rst') as f:
-    LONG_README = f.read()
+with open('README.rst') as readme_file:
+    LONG_README = readme_file.read()
 
 DEV_REQUIRES = [
-    'pytest>=2.8',
     'coverage>=3.7.1',
     'setuptools>=32.1.3',
     'pep8>=1.7.0'
@@ -45,7 +38,6 @@ setup(
     url='https://github.com/Infotecs/domain_tools',
     license='MIT License',
     packages=find_packages(exclude=('test', 'docs')),
-    tests_require=['mock'],
     extras_require={
         'test': DEV_REQUIRES,
     },
@@ -62,6 +54,7 @@ setup(
         'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: Implementation :: CPython',
         'Topic :: Software Development :: Libraries :: Python Modules',
         'Topic :: Utilities',
