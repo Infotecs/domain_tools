@@ -15,6 +15,7 @@ import json
 import logging
 import ssl
 import sys
+import pprint
 
 from ldap3 import Server, Connection
 from ldap3.core.exceptions import LDAPExceptionError, LDAPOperationResult
@@ -22,10 +23,11 @@ from ldap3.core.exceptions import LDAPExceptionError, LDAPOperationResult
 from domain_tools import __version__
 from domain_tools.settings import Settings
 
+logger = logging.getLogger("get_ldap_users")
+
 
 def parse_settings_file(parsed_args):
     """ Parse JSON file with settings """
-    logger = logging.getLogger('parse_settings_file')
     logger.debug("Passed JSON file with settings: %s",
                  parsed_args.settings_file.name)
     settings = Settings()
@@ -35,32 +37,20 @@ def parse_settings_file(parsed_args):
         logger.error("Failed to parse %s: %s",
                      parsed_args.settings_file.name, exp)
         return None
+
     try:
-        if parsed_args.domain_user is None:
-            settings.ldap_username = json_settings['ldap_username']
-        else:
-            settings.ldap_username = parsed_args.domain_user
-        logger.debug("ldap_username is %s", settings.ldap_username)
-        if parsed_args.domain_password is None:
-            settings.ldap_password = json_settings['ldap_password']
-            logger.debug("Use ldap_password from file.")
-        else:
-            settings.ldap_password = parsed_args.domain_password
-            logger.debug("Use ldap_password from command line parameters.")
-        settings.ldap_server = json_settings['ldap_server']
-        logger.debug("ldap_server is %s", settings.ldap_server)
-        settings.ldap_port = json_settings['ldap_port']
-        logger.debug("ldap_port is %s", settings.ldap_port)
-        settings.use_ssl = json_settings['use_ssl']
-        logger.debug("use_ssl is %s", settings.use_ssl)
-        settings.search_base = json_settings['search_base']
-        logger.debug("search_base is %s", settings.search_base)
-        settings.use_json_bindings(json_settings['field_bindings'])
-        logger.debug("field_bindings is ok")
+        settings.from_json(json_settings)
     except KeyError as exp:
         logger.warning("Can't find %s in %s.",
-                       parsed_args.settings_file.name, exp)
+                       exp, parsed_args.settings_file.name)
         return None
+
+    if parsed_args.domain_user is not None:
+        settings.ldap_username = parsed_args.domain_user
+        logger.debug("Using ldap_username from command line parameters.")
+    if parsed_args.domain_password is not None:
+        settings.ldap_password = parsed_args.domain_password
+        logger.debug("Using ldap_password from command line parameters.")
     return settings
 
 
@@ -71,7 +61,6 @@ def ask_password(username):
 
 def get_ldap_users(settings):
     """ Get users list from LDAPS server """
-    logger = logging.getLogger('get_ldap_users')
     if settings.use_ssl:
         try:
             ldap_server_cert = ssl.get_server_certificate(
@@ -105,28 +94,30 @@ def get_ldap_users(settings):
 
 def save_records_to_csv(entries, mappings, output_path):
     """Save LDAP records to the CSV file"""
-    logger = logging.getLogger('save_records_to_csv')
-    with open(output_path, 'w+', newline='', encoding='utf-8') as output_file:
-        table = csv.writer(output_file, delimiter=';')
-        total_entries = 0
-        saved_entries = 0
-        try:
-            for entry in entries:
-                total_entries += 1
-                try:
-                    table.writerow(
-                        [entry['attributes'][k] if entry['attributes'][k]
-                         else '' for k in mappings.values()])
-                except KeyError:
-                    continue
-                saved_entries += 1
-            logger.info("%d entries found.", total_entries)
-            print("%d record(s) saved to %s file." %
-                  (saved_entries, output_path))
-        except (LDAPExceptionError, LDAPOperationResult) as exp:
-            logger.error("Failed to retrieve domain entries: %s", exp)
-        output_file.close()
-        return total_entries
+    try:
+        with open(output_path, 'w+', newline='', encoding='utf-8') as out_file:
+            table = csv.writer(out_file, delimiter=';')
+            total_entries = 0
+            saved_entries = 0
+            try:
+                for entry in entries:
+                    total_entries += 1
+                    try:
+                        table.writerow(
+                            [entry['attributes'][k] if entry['attributes'][k]
+                             else '' for k in mappings.values()])
+                    except KeyError:
+                        continue
+                    saved_entries += 1
+                logger.info("%d entries found.", total_entries)
+                print("%d record(s) saved to %s file." %
+                      (saved_entries, output_path))
+            except (LDAPExceptionError, LDAPOperationResult) as exp:
+                logger.error("Failed to retrieve domain entries: %s", exp)
+            return total_entries
+    except (IOError, OSError) as exp:
+        logger.error('Failed to open the output file: %s', exp)
+        return 0
 
 
 def create_parser():
@@ -178,8 +169,6 @@ def create_parser():
 def safe_parse_args(parser, args):
     """Safely parse arguments"""
     try:
-        if len(args) == 0:
-            raise ValueError
         options = parser.parse_args(args)
     except ValueError:
         parser.print_help()
@@ -209,11 +198,21 @@ def print_sample_json(args):
 
 def main():
     """ Entry point implementation """
-    args = safe_parse_args(create_parser(), sys.argv[1:])
+    parser = create_parser()
+    args = safe_parse_args(parser, sys.argv[1:])
     if args.verbose:
-        logging.basicConfig(level=logging.DEBUG)
+        logging.basicConfig(
+            level=logging.DEBUG,
+            format='%(asctime)s:%(name)s:%(levelname)s:%(message)s',
+            datefmt='%Y-%m-%d %H:%M.%S')
+        logger.debug("Verbose mode is On.")
 
-    args.func(args)
+    if hasattr(args, 'func'):
+        logger.debug(args.func)
+        args.func(args)
+    else:
+        logger.debug("No valid commands so show help.")
+        parser.print_help()
 
 
 if __name__ == "__main__":
