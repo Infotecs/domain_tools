@@ -55,6 +55,7 @@ class TestParseBindings(unittest.TestCase):
         }
         settings = Settings()
         settings.use_json_bindings(wrong_bindings)
+        self.assertIsNone(settings.field_bindings)
 
     def test_missing_elements(self):
         """Test bindings with missed elements."""
@@ -115,8 +116,8 @@ class TestParseSettings(unittest.TestCase):
                 'Args',
                 "domain_user domain_password settings_file output_file")
             parsed_args = args(None, None, settings_file, output_file)
-            self.assertEquals(parsed_args.settings_file.closed, False)
-            self.assertEquals(parsed_args.output_file.closed, False)
+            self.assertFalse(parsed_args.settings_file.closed)
+            self.assertFalse(parsed_args.output_file.closed)
             settings = get_ldap_users.parse_settings_file(parsed_args)
         self.assertIsNone(settings)
 
@@ -130,8 +131,8 @@ class TestParseSettings(unittest.TestCase):
                 'Args',
                 "domain_user domain_password settings_file output_file")
             parsed_args = args('test', 'pass', settings_file, output_file)
-            self.assertEquals(parsed_args.settings_file.closed, False)
-            self.assertEquals(parsed_args.output_file.closed, False)
+            self.assertFalse(parsed_args.settings_file.closed)
+            self.assertFalse(parsed_args.output_file.closed)
             settings = get_ldap_users.parse_settings_file(parsed_args)
         self.assertIsNone(settings)
 
@@ -145,8 +146,8 @@ class TestParseSettings(unittest.TestCase):
                 'Args',
                 "domain_user domain_password settings_file output_file")
             parsed_args = args('test', 'pass', settings_file, output_file)
-            self.assertEquals(parsed_args.settings_file.closed, False)
-            self.assertEquals(parsed_args.output_file.closed, False)
+            self.assertFalse(parsed_args.settings_file.closed)
+            self.assertFalse(parsed_args.output_file.closed)
             settings = get_ldap_users.parse_settings_file(parsed_args)
         self.assertIsNone(settings)
 
@@ -167,8 +168,8 @@ class TestParseSettings(unittest.TestCase):
                 'Args',
                 "domain_user domain_password settings_file output_file")
             parsed_args = args('test', None, settings_file, output_file)
-            self.assertEquals(parsed_args.settings_file.closed, False)
-            self.assertEquals(parsed_args.output_file.closed, False)
+            self.assertFalse(parsed_args.settings_file.closed)
+            self.assertFalse(parsed_args.output_file.closed)
             settings = get_ldap_users.parse_settings_file(parsed_args)
         self.assertIsNotNone(settings)
         self.assertEqual(len(settings.field_bindings), 4)
@@ -197,7 +198,7 @@ class TestParseSettings(unittest.TestCase):
             args = namedtuple(
                 'Args', "domain_user domain_password settings_file")
             parsed_args = args(None, 'pass word', settings_file)
-            self.assertEquals(parsed_args.settings_file.closed, False)
+            self.assertFalse(parsed_args.settings_file.closed)
             settings = get_ldap_users.parse_settings_file(parsed_args)
         self.assertIsNotNone(settings)
         self.assertNotEqual(default_settings.__dict__, settings.__dict__)
@@ -312,8 +313,11 @@ class TestParamParser(unittest.TestCase):
 
     def test_verbose(self):
         """Test exit when only verbose flag passed."""
-        with patch('sys.argv', ["1.py", "-v"]):
-            get_ldap_users.main()
+        try:
+            with patch('sys.argv', ["1.py", "-v"]):
+                get_ldap_users.main()
+        except AssertionError as exp:
+            self.fail("Unexpected exception: %s" % exp)
 
     def test_version(self):
         """Test exit when version flag passed."""
@@ -323,8 +327,11 @@ class TestParamParser(unittest.TestCase):
 
     def test_no_args(self):
         """Test exit when no arguments passed."""
-        with patch('sys.argv', ["1.py"]):
-            get_ldap_users.main()
+        try:
+            with patch('sys.argv', ["1.py"]):
+                get_ldap_users.main()
+        except AssertionError as exp:
+            self.fail("Unexpected exception: %s" % exp)
 
 
 if __name__ == '__main__':
