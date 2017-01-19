@@ -17,16 +17,14 @@ import logging
 from domain_tools import get_ldap_users
 from domain_tools.settings import Settings
 
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s:%(name)s:%(levelname)s:%(message)s',
+    datefmt='%Y-%m-%d %H:%M.%S')
+
 
 class TestParseBindings(unittest.TestCase):
     """Test parsing field_bindings."""
-    def setUp(self):
-        """Initialize logger"""
-        logging.basicConfig(
-            level=logging.DEBUG,
-            format='%(asctime)s:%(name)s:%(levelname)s:%(message)s',
-            datefmt='%Y-%m-%d %H:%M.%S')
-
     def test_order(self):
         """Test parser with correct settings."""
         correct_bindings = {
@@ -101,13 +99,6 @@ class TestParseBindings(unittest.TestCase):
 
 class TestParseSettings(unittest.TestCase):
     """Test parsing settings file."""
-    def setUp(self):
-        """Initialize logger"""
-        logging.basicConfig(
-            level=logging.DEBUG,
-            format='%(asctime)s:%(name)s:%(levelname)s:%(message)s',
-            datefmt='%Y-%m-%d %H:%M.%S')
-
     def test_empty_file(self):
         """Test empty input file."""
         with tempfile.NamedTemporaryFile('r') as settings_file,\
@@ -211,13 +202,6 @@ class TestParseSettings(unittest.TestCase):
 
 class TestSave(unittest.TestCase):
     """Test results serializing."""
-    def setUp(self):
-        """Initialize logger"""
-        logging.basicConfig(
-            level=logging.DEBUG,
-            format='%(asctime)s:%(name)s:%(levelname)s:%(message)s',
-            datefmt='%Y-%m-%d %H:%M.%S')
-
     def test_invalid_output(self):
         """Test invalid output path will be processed correctly."""
         invalid_path = ''
