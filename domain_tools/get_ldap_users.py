@@ -165,16 +165,6 @@ def create_parser():
     return parser
 
 
-def safe_parse_args(parser, args):
-    """Safely parse arguments"""
-    try:
-        options = parser.parse_args(args)
-    except ValueError:
-        parser.print_help()
-        sys.exit(0)
-    return options
-
-
 def import_users(args):
     """Import users from domain"""
     settings = parse_settings_file(args)
@@ -198,7 +188,7 @@ def print_sample_json(args):
 def main():
     """ Entry point implementation """
     parser = create_parser()
-    args = safe_parse_args(parser, sys.argv[1:])
+    args = parser.parse_args(sys.argv[1:])
     if args.verbose:
         logging.basicConfig(
             level=logging.DEBUG,
