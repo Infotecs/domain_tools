@@ -99,8 +99,7 @@ def save_records_to_csv(entries, mappings, output_path):
             total_entries = 0
             saved_entries = 0
             try:
-                for entry in entries:
-                    total_entries += 1
+                for total_entries, entry in enumerate(entries, start=1):
                     try:
                         table.writerow(
                             [entry['attributes'][k] if entry['attributes'][k]
