@@ -92,4 +92,16 @@ artifacts:
 
 #on_success:
 #  - TODO: upload the content of dist/*.whl to a public wheelhouse
-#
+
+branches:
+  only:
+    - master
+    - appveyor
+    - /v\d\.\d\.\d/
+
+deploy:
+  provider: GitHub
+  on:
+    branch: appveyor
+    appveyor_repo_tag: true
+
