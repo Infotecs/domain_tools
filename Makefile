@@ -13,7 +13,7 @@ clean:
 distclean: clean
 
 coverage:
-	$(PYTHON) -m coverage run --source domain_tools setup.py test >/dev/null 2>&1
+	$(PYTHON) -m coverage run --source domain_tools setup.py test
 	$(PYTHON) -m coverage report -m --fail-under=70
 
 lint:

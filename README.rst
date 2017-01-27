@@ -2,6 +2,18 @@
 Tools to parse and import domain structure
 ==========================================
 
+.. image:: https://img.shields.io/travis/Infotecs/domain_tools/master.svg?style=flat
+   :target: https://travis-ci.org/Infotecs/domain_tools
+
+.. image:: https://codecov.io/gh/Infotecs/domain_tools/branch/master/graph/badge.svg
+   :target: https://codecov.io/gh/Infotecs/domain_tools
+
+.. image:: https://img.shields.io/github/release/Infotecs/domain_tools.svg?style=flat
+   :target: https://github.com/Infotecs/domain_tools/releases
+
+.. image:: https://img.shields.io/github/issues/Infotecs/domain_tools.svg
+   :target: https://github.com/Infotecs/domain_tools/issues
+
 Here's a utility to import users from the specified LDAP server.
 The usage is a pretty simple:
 
