@@ -2,8 +2,11 @@
 Tools to parse and import domain structure
 ==========================================
 
-.. image:: https://img.shields.io/travis/Infotecs/domain_tools/master.svg?style=flat
-   :target: https://travis-ci.org/Infotecs/domain_tools
+.. image:: https://travis-ci.org/Infotecs/domain_tools.svg?branch=master
+    :target: https://travis-ci.org/Infotecs/domain_tools
+    
+.. image:: https://ci.appveyor.com/api/projects/status/github/Infotecs/domain_tools?branch=master&svg=true&passingText=Windows%20build%20passing&failingText=Windows%20build%20failing
+   :target: https://ci.appveyor.com/project/jia3ep/domain-tools-ru05i
 
 .. image:: https://codecov.io/gh/Infotecs/domain_tools/branch/master/graph/badge.svg
    :target: https://codecov.io/gh/Infotecs/domain_tools
