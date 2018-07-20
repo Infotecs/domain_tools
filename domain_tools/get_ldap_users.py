@@ -130,6 +130,7 @@ def create_parser():
                         help="Show script version and exit.")
 
     subparsers = parser.add_subparsers(help="Available commands")
+    subparsers.required = False
     import_parser = subparsers.add_parser(
         'import',
         help="Import users from domain.")
